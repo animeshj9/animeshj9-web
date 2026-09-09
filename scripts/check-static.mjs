@@ -17,7 +17,7 @@ for (const file of walk(dist)) {
     assert.ok(existsSync(path), `Missing local asset ${ref} in ${file}`);
   }
 }
-for (const project of ['feedproof','galli-club']) {
+for (const project of ['feedproof','galli-club','footpath-optional']) {
   const ui = readFileSync(join(dist,project,'index.html'),'utf8');
   const app = readFileSync(join(dist,project,'app.mjs'),'utf8');
   for (const [, id] of app.matchAll(/\$\('([^']+)'\)/g)) assert.ok(ui.includes(`id="${id}"`), `Missing UI element ${project}/${id}`);

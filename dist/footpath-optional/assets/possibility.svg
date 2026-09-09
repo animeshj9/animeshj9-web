@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="904" viewBox="0 0 1200 904" role="img" aria-labelledby="title desc">
+<title id="title">A continuous walk: conceptual street diagram</title><desc id="desc">Top-down schematic, not a surveyed plan. Walking surfaces continue across driveways, with planting outside the clear path and a marked crossing connecting both sides.</desc>
+<defs><pattern id="zebra" width="35" height="40" patternUnits="userSpaceOnUse"><rect width="22" height="40" fill="#fcf9e8"/></pattern></defs>
+<rect width="1200" height="904" fill="#e4e8db"/>
+<g font-family="Arial,sans-serif" fill="#232721"><text x="50" y="70" font-size="17" letter-spacing="3">A WALK THAT DOESN’T DISAPPEAR</text><text x="50" y="115" font-size="33" font-weight="bold">Continuity is the whole point.</text>
+<rect x="0" y="350" width="1200" height="265" fill="#7c827b"/><path d="M0 482H1200" stroke="#f3efdf" stroke-width="4" stroke-dasharray="36 25"/>
+<rect x="0" y="265" width="1200" height="75" fill="#e8bd73"/><rect x="0" y="625" width="1200" height="75" fill="#e8bd73"/>
+<path d="M0 302H1200M0 662H1200" stroke="#a96325" stroke-width="2" stroke-dasharray="4 8"/>
+<path d="M895 155V265H1050V155" fill="#bcc4b3"/><path d="M895 265V340H1050V265" fill="#e8bd73" stroke="#a96325" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="435" y="350" width="250" height="265" fill="url(#zebra)"/>
+<path d="M435 340L447 321H673L685 340M435 615L447 643H673L685 615" fill="#f5d6a1" stroke="#a96325" stroke-width="2"/>
+<g fill="#729367" stroke="#526f4d" stroke-width="3"><circle cx="95" cy="231" r="24"/><circle cx="265" cy="231" r="24"/><circle cx="755" cy="231" r="24"/><circle cx="1090" cy="735" r="24"/><circle cx="810" cy="735" r="24"/><circle cx="155" cy="735" r="24"/></g>
+<g fill="#087d88"><rect x="720" y="404" width="120" height="45" rx="12"/><rect x="155" y="530" width="120" height="45" rx="12"/></g>
+<g font-size="20" font-weight="bold"><text x="50" y="205">Planting beside the path</text><text x="460" y="205">Connected crossing*</text><text x="870" y="205">Driveway</text><text x="70" y="315">CONTINUOUS WALKING ZONE →</text><text x="710" y="675">← CONTINUOUS WALKING ZONE</text></g>
+<path d="M555 216V260M970 215V256" stroke="#232721" stroke-width="2"/>
+<text x="50" y="810" font-size="17">*Location, width, ramps, drainage and signals require a site survey.</text><text x="50" y="845" font-size="15" letter-spacing="1">DESIGN PRINCIPLES ONLY · NOT TO SCALE · NOT AN APPROVED STREET PLAN</text></g></svg>

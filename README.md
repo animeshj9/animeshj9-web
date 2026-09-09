@@ -6,7 +6,8 @@ Source for the experiments intended for **animeshj9.com**. One repository, one f
 
 | Route | Experiment | Status |
 | --- | --- | --- |
-| `/` | Lab catalogue | Galli Club featured first |
+| `/` | Lab catalogue | Footpath Optional featured first |
+| `/footpath-optional/` | Hyderabad pedestrian evidence map | OSM snapshot, local field notes, archived photo and design diagram; no reviewed field surveys yet |
 | `/galli-club/` | Original Hyderabad story-and-play adventures for ages 3–7 | Playable sample + finished printable edition; sales closed pending playtests |
 | `/feedproof/` | Google Shopping feed preflight: local CSV/TSV checks, repair report and formatting fixes | Earlier experiment; free checker |
 | `/long-arc/` | Local-first thesis notebook | Existing experiment preserved |
@@ -14,6 +15,8 @@ Source for the experiments intended for **animeshj9.com**. One repository, one f
 **Galli Club** is the current revenue experiment: Hyderabad at-home adventures for parents and little kids, with a proposed ₹299 three-story digital pack. The free sample has quiet-play and age-specific prompts. The 12-page full pack, four-page free kit, and actual-page preview are built. [Product thesis, alternatives, first-ten-family plan and launch notes](docs/GALLI_CLUB.md).
 
 FeedProof remains available; its [earlier product research](docs/PRODUCT.md) is preserved. Neither product has validated paying demand yet.
+
+**Footpath Optional** is a free civic experiment focused on Financial District, Nanakramguda and Kokapet. [Evidence, limitations, field-audit plan and image credits](docs/FOOTPATH_OPTIONAL.md). No monetization, routing, public submissions or invented field observations.
 
 ## Run and verify
 
