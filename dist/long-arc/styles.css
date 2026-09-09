@@ -101,12 +101,25 @@ select:focus-visible,
 }
 
 .topbar-note {
+  display: flex;
+  align-items: center;
+  gap: 24px;
   padding: 0 28px;
   color: #9da2ab;
   font-family: var(--serif);
   font-size: 1.05rem;
   font-style: italic;
 }
+
+.lab-return {
+  color: var(--amber);
+  font-family: var(--mono);
+  font-size: .7rem;
+  font-style: normal;
+  letter-spacing: .04em;
+  text-decoration: none;
+}
+.lab-return:hover { color: var(--white); }
 
 .topbar-actions {
   display: flex;

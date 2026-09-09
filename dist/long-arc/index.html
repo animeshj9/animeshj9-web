@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111317" />
+    <meta
+      name="description"
+      content="Long Arc is a thesis notebook for ideas that take years to prove."
+    />
+    <title>Long Arc — Think in years, update in evidence</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Long Arc home">
+          <span class="brand-mark" aria-hidden="true">L/A</span>
+          <span>LONG ARC</span>
+        </a>
+        <div class="topbar-note"><a class="lab-return" href="../">← Animesh / Lab</a><span>A notebook for slow ideas</span></div>
+        <div class="topbar-actions">
+          <button class="text-button" id="exportButton" type="button">Export</button>
+          <button class="primary-button" id="newThesisButton" type="button">New thesis</button>
+        </div>
+      </header>
+
+      <aside class="library" aria-label="Thesis library">
+        <div class="library-head">
+          <label class="search-wrap" for="searchInput">
+            <span class="sr-only">Search theses</span>
+            <input id="searchInput" type="search" placeholder="Search the library" autocomplete="off" />
+            <kbd>/</kbd>
+          </label>
+          <div class="filters" id="filters" aria-label="Filter by domain"></div>
+        </div>
+        <div class="thesis-list" id="thesisList"></div>
+        <div class="library-footer">
+          <span><strong id="libraryCount">0</strong> live theses</span>
+          <span>Stored on this device</span>
+        </div>
+      </aside>
+
+      <main class="workspace" id="workspace" tabindex="-1"></main>
+    </div>
+
+    <dialog class="dialog" id="newThesisDialog">
+      <form method="dialog" id="newThesisForm">
+        <div class="dialog-kicker">NEW LINE OF INQUIRY</div>
+        <h2>What do you believe might be true?</h2>
+        <label>
+          Thesis
+          <textarea name="title" rows="3" maxlength="180" required placeholder="State the claim, not the topic."></textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            Domain
+            <select name="domain">
+              <option>AI Engineering</option>
+              <option>Technology</option>
+              <option>History</option>
+              <option>Hyderabad</option>
+              <option>Investing</option>
+              <option>Writing</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>
+            Horizon
+            <input name="horizon" type="number" min="2026" max="2100" value="2030" required />
+          </label>
+        </div>
+        <label>
+          Why it matters
+          <textarea name="why" rows="2" maxlength="240" placeholder="What changes if this is right?"></textarea>
+        </label>
+        <div class="dialog-actions">
+          <button class="text-button" value="cancel" type="button" id="cancelDialog">Cancel</button>
+          <button class="primary-button" value="default" type="submit">Start the thesis</button>
+        </div>
+      </form>
+    </dialog>
+
+    <template id="emptyTemplate">
+      <section class="empty-state">
+        <div class="empty-mark" aria-hidden="true">∿</div>
+        <h1>No thesis matches this view.</h1>
+        <p>Change the filter or begin a new line of inquiry.</p>
+        <button class="primary-button" type="button" data-action="new">New thesis</button>
+      </section>
+    </template>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

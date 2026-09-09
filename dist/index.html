@@ -4,93 +4,71 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#111317" />
-    <meta
-      name="description"
-      content="Long Arc is a thesis notebook for ideas that take years to prove."
-    />
-    <title>Long Arc — Think in years, update in evidence</title>
-    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css" />
+    <meta name="description" content="Animesh's lab: small tools, models, and ideas built to think with." />
+    <title>Animesh / Lab</title>
+    <link rel="icon" href="./lab-favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./lab.css" />
   </head>
   <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <a class="brand" href="#" aria-label="Long Arc home">
-          <span class="brand-mark" aria-hidden="true">L/A</span>
-          <span>LONG ARC</span>
+    <div class="lab-shell">
+      <header class="lab-header">
+        <a class="lab-brand" href="./" aria-label="Animesh Lab home">
+          <span class="brand-block">A/9</span>
+          <span>ANIMESH / LAB</span>
         </a>
-        <div class="topbar-note">A notebook for slow ideas</div>
-        <div class="topbar-actions">
-          <button class="text-button" id="exportButton" type="button">Export</button>
-          <button class="primary-button" id="newThesisButton" type="button">New thesis</button>
-        </div>
+        <nav aria-label="Related sites">
+          <a href="https://animeshja.in">About</a>
+          <a href="https://scaling-life.com">Writing</a>
+          <a href="https://github.com/animeshj9">GitHub</a>
+        </nav>
       </header>
 
-      <aside class="library" aria-label="Thesis library">
-        <div class="library-head">
-          <label class="search-wrap" for="searchInput">
-            <span class="sr-only">Search theses</span>
-            <input id="searchInput" type="search" placeholder="Search the library" autocomplete="off" />
-            <kbd>/</kbd>
-          </label>
-          <div class="filters" id="filters" aria-label="Filter by domain"></div>
-        </div>
-        <div class="thesis-list" id="thesisList"></div>
-        <div class="library-footer">
-          <span><strong id="libraryCount">0</strong> live theses</span>
-          <span>Stored on this device</span>
-        </div>
-      </aside>
+      <main>
+        <section class="lab-intro" aria-labelledby="lab-title">
+          <div class="intro-index">LAB / 2026—</div>
+          <div>
+            <h1 id="lab-title">Things built<br />to think with.</h1>
+            <p>Small tools, models, and experiments across AI, cities, history, writing, and capital. Some may grow. Some may simply answer a question.</p>
+          </div>
+          <div class="lab-note">
+            <span>STATUS</span>
+            <strong>Always in progress</strong>
+          </div>
+        </section>
 
-      <main class="workspace" id="workspace" tabindex="-1"></main>
+        <section class="experiment-ledger" aria-labelledby="experiments-title">
+          <div class="ledger-head">
+            <h2 id="experiments-title">Experiments</h2>
+            <span>01 LIVE</span>
+          </div>
+
+          <a class="experiment-card" href="./long-arc/">
+            <span class="experiment-number">001</span>
+            <span class="experiment-main">
+              <span class="experiment-status">LIVE / LOCAL-FIRST</span>
+              <strong>Long Arc</strong>
+              <span class="experiment-description">A thesis notebook for ideas that take years to prove.</span>
+            </span>
+            <span class="experiment-tags">
+              <span>DECISIONS</span>
+              <span>EVIDENCE</span>
+              <span>TIME</span>
+            </span>
+            <span class="experiment-open" aria-hidden="true">↗</span>
+          </a>
+        </section>
+
+        <section class="principle-strip" aria-label="Lab principles">
+          <div><span>01</span><strong>Build the question</strong></div>
+          <div><span>02</span><strong>Make it usable</strong></div>
+          <div><span>03</span><strong>Keep the scar tissue</strong></div>
+        </section>
+      </main>
+
+      <footer>
+        <span>ANIMESH JAIN · HYDERABAD</span>
+        <span>Experiments may change without notice.</span>
+      </footer>
     </div>
-
-    <dialog class="dialog" id="newThesisDialog">
-      <form method="dialog" id="newThesisForm">
-        <div class="dialog-kicker">NEW LINE OF INQUIRY</div>
-        <h2>What do you believe might be true?</h2>
-        <label>
-          Thesis
-          <textarea name="title" rows="3" maxlength="180" required placeholder="State the claim, not the topic."></textarea>
-        </label>
-        <div class="form-grid">
-          <label>
-            Domain
-            <select name="domain">
-              <option>AI Engineering</option>
-              <option>Technology</option>
-              <option>History</option>
-              <option>Hyderabad</option>
-              <option>Investing</option>
-              <option>Writing</option>
-              <option>Other</option>
-            </select>
-          </label>
-          <label>
-            Horizon
-            <input name="horizon" type="number" min="2026" max="2100" value="2030" required />
-          </label>
-        </div>
-        <label>
-          Why it matters
-          <textarea name="why" rows="2" maxlength="240" placeholder="What changes if this is right?"></textarea>
-        </label>
-        <div class="dialog-actions">
-          <button class="text-button" value="cancel" type="button" id="cancelDialog">Cancel</button>
-          <button class="primary-button" value="default" type="submit">Start the thesis</button>
-        </div>
-      </form>
-    </dialog>
-
-    <template id="emptyTemplate">
-      <section class="empty-state">
-        <div class="empty-mark" aria-hidden="true">∿</div>
-        <h1>No thesis matches this view.</h1>
-        <p>Change the filter or begin a new line of inquiry.</p>
-        <button class="primary-button" type="button" data-action="new">New thesis</button>
-      </section>
-    </template>
-
-    <script src="./app.js" defer></script>
   </body>
 </html>
