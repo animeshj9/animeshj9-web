@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Check Google Shopping CSV and TSV feeds in your browser. Find broken fields, inspect safe fixes, and export a client-ready repair report.">
+  <meta name="theme-color" content="#143de5">
+  <title>FeedProof — Check the feed. Before the handoff.</title>
+  <link rel="icon" href="../lab-favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#checker">Skip to checker</a>
+  <header class="topbar"><a class="brand" href="./"><span class="mark" aria-hidden="true">F/</span>FeedProof<span class="badge">BETA</span></a><nav aria-label="Main navigation"><a href="#scope">What we check</a><a href="#pilot">Repair pilot</a><a href="../">Animesh / Lab ↗</a></nav></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">FOR SMALL ECOMMERCE AGENCIES</p><h1>Check the feed.<br><span>Before the handoff.</span></h1><p class="lede">Find the broken fields in a Google Shopping feed. Give your client a repair list, not another spreadsheet to decipher.</p></div><aside class="privacy-note"><span class="mono">LOCAL BY DESIGN</span><strong>Your catalogue stays<br>in your browser.</strong><p>No account. No AI upload.<br>No store credentials.</p></aside></section>
+    <section class="workbench" id="checker" aria-labelledby="checker-title">
+      <div class="bench-title"><h2 id="checker-title"><span class="step">01</span> Feed preflight</h2><span class="mono">CSV / TSV · UP TO 5 MB / 10,000 PRODUCTS</span></div>
+      <div class="intake"><div class="dropzone" id="dropzone"><p class="upload-title">Drop a product feed here</p><p>Google-format columns, exported from your feed plugin.<br>Not a raw WooCommerce inventory export.</p><label class="button primary file-button">Choose CSV or TSV<input type="file" id="file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values"></label><button class="button subtle" id="sample">Try an example feed</button><p class="small">UTF-8 only. Quoted commas and multiline descriptions supported.</p></div><div class="intake-notes"><span class="eyebrow">A USEFUL SECOND PAIR OF EYES</span><ol><li>Find missing fields, duplicate IDs, and malformed values.</li><li>See the affected products and a concrete next action.</li><li>Export a report or review formatting-only fixes.</li></ol><p class="small">An independent preflight, not Google approval. We don’t fetch product pages or check account policies.</p></div></div>
+      <details class="paste"><summary>Or paste a small feed</summary><label for="paste-input">Include the header row</label><textarea id="paste-input" rows="5" maxlength="5242880" spellcheck="false" placeholder="id,title,description,link,image_link,availability,price"></textarea><button class="button" id="check-paste">Check pasted feed</button></details>
+      <p id="status" role="status" aria-live="polite"></p><p id="error" role="alert" hidden></p>
+      <noscript><p class="notice">JavaScript is needed to check your feed locally. Nothing is uploaded.</p></noscript>
+    </section>
+    <section id="results" class="results" aria-labelledby="results-title" hidden tabindex="-1">
+      <div class="result-heading"><div><p class="eyebrow" id="filename"></p><h2 id="results-title">Your preflight report</h2></div><button class="button subtle" id="clear">Clear this feed</button></div>
+      <div class="metrics"><div><strong id="product-count">0</strong><span>products checked</span></div><div class="error-metric"><strong id="error-count">0</strong><span>errors to resolve</span></div><div><strong id="warning-count">0</strong><span>items to review</span></div><div><strong id="fix-count">0</strong><span>formatting fixes available</span></div></div>
+      <p id="verdict" class="verdict"></p>
+      <div class="report-actions"><button class="button primary" id="download-report">Download HTML report</button><button class="button" id="download-issues">Export issue CSV</button><button class="button" id="review-fixes">Review safe fixes</button></div>
+      <div class="filters"><label>Severity<select id="severity"><option value="all">All issues</option><option value="error">Errors</option><option value="warning">Review items</option></select></label><label class="search">Find a product or field<input type="search" id="search" placeholder="Product ID, title, or field"></label><span id="issue-count" class="small" aria-live="polite"></span></div>
+      <div id="issue-list" class="issue-list"></div><button class="button" id="show-more" hidden>Show next 50 issues</button>
+      <p class="small">Row numbers are spreadsheet record numbers (header = 1); a quoted description may span several physical lines. Counts are findings, not disapproved products.</p>
+    </section>
+    <section class="bottom-grid" id="scope"><div><p class="eyebrow">CLEAR BOUNDARIES</p><h2>Useful checks.<br>No approval theatre.</h2><details open><summary>Included in this beta</summary><p>Core required columns and values; ID uniqueness and length; title and description length; URL syntax; availability and condition values; price syntax; sale-price comparison; GTIN length and checksum; identifier and availability-date review reminders.</p></details><details><summary>What still needs a human or Merchant Center?</summary><p>Shipping, tax, apparel and country-specific requirements, image quality, crawlability, landing-page matches, identifier ownership, restricted products, account suspensions, and policy compliance. A clean report is not a promise of approval.</p></details><details><summary>What gets changed in a safe-fix export?</summary><p>Only proposed formatting changes you choose to apply: standard column names, recognized availability/condition labels, and currency-letter capitalization. We never invent a GTIN, change an amount, remove a product, or infer stock. Review the preview and recheck your final feed.</p></details><p class="small">Rules reference: <a href="https://support.google.com/merchants/answer/7052112?hl=en" target="_blank" rel="noopener noreferrer">Google product data specification ↗</a>. Rule set dated 9 September 2026. CSV is an interchange format here; use the TSV export for Google's text-feed workflow.</p></div>
+      <aside class="pilot" id="pilot"><p class="eyebrow">ASSISTED REPAIR · PROPOSED PILOT</p><h2>A second pair of hands.</h2><div class="price">$49<span>USD / one feed</span></div><p>For a small agency that wants help turning the error list into a corrected handoff.</p><ul><li>One Google-format feed, up to 1,000 products</li><li>Field-level repair notes and a corrected file where source facts are available</li><li>One follow-up check; no store or Google account access</li></ul><p class="small">Not a subscription. No account-reinstatement or approval guarantee. Scope and turnaround must be agreed before payment.</p><a id="pilot-link" class="button primary" href="#pilot-status" aria-disabled="true">Pilot checkout not open yet</a><p class="small" id="pilot-status">The checker is free. Paid requests are not being accepted yet; no payment or email is collected here.</p></aside>
+    </section>
+  </main>
+  <footer><a href="https://animeshja.in">Built by Animesh Jain</a><span>An independent experiment. Not affiliated with Google.</span><a href="./privacy.html">Privacy &amp; limitations</a></footer>
+  <dialog id="fix-dialog" aria-labelledby="fix-title"><div class="dialog-header"><h2 id="fix-title">Review formatting fixes</h2><button class="button subtle" id="close-fixes" aria-label="Close formatting fixes">Close</button></div><p>These changes don’t resolve missing facts. The export preserves all products and other values. Check each proposed transformation before applying.</p><div id="fix-list"></div><label class="consent"><input type="checkbox" id="fix-consent"> I’ve reviewed these formatting changes.</label><p class="small">Feed exports preserve values, including spreadsheet formulas. Import as text; don’t open an untrusted feed directly in a spreadsheet.</p><button class="button primary" id="download-fixed" disabled>Apply fixes &amp; export TSV</button></dialog>
+</body>
+</html>
