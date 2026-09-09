@@ -17,7 +17,9 @@ for (const file of walk(dist)) {
     assert.ok(existsSync(path), `Missing local asset ${ref} in ${file}`);
   }
 }
-const ui = readFileSync(join(dist,'feedproof/index.html'),'utf8');
-const app = readFileSync(join(dist,'feedproof/app.mjs'),'utf8');
-for (const [, id] of app.matchAll(/\$\('([^']+)'\)/g)) assert.ok(ui.includes(`id="${id}"`), `Missing UI element ${id}`);
+for (const project of ['feedproof','galli-club']) {
+  const ui = readFileSync(join(dist,project,'index.html'),'utf8');
+  const app = readFileSync(join(dist,project,'app.mjs'),'utf8');
+  for (const [, id] of app.matchAll(/\$\('([^']+)'\)/g)) assert.ok(ui.includes(`id="${id}"`), `Missing UI element ${project}/${id}`);
+}
 console.log('Static checks passed: local links/assets, unique IDs, DOM bindings and JavaScript syntax.');

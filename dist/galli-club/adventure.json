@@ -1,0 +1,67 @@
+{
+  "id": "pikus-postcard",
+  "title": "Piku's missing postcard",
+  "subtitle": "A tiny Charminar adventure, without leaving home.",
+  "minutes": { "little": "10–15", "big": "15–20" },
+  "materials": ["One sheet of paper", "A crayon or pencil", "A grown-up to play along"],
+  "fact": "Charminar is a Hyderabad landmark with four minarets (towers).",
+  "source": "https://hyderabad.telangana.gov.in/tourist-place/charminar/",
+  "fiction": "Piku and the missing postcard are make-believe. The landmark is real.",
+  "steps": [
+    {
+      "id": "invitation", "label": "Meet Piku", "title": "A very small emergency",
+      "read": "Piku the pigeon landed on the windowsill with a crumpled envelope. ‘I promised to send my cousin a postcard of Hyderabad. But the wind has carried my picture away! {name}, will you help me make a new one?’",
+      "hinglish": "Piku ko Hyderabad ka postcard banana hai. {name}, kya tum uski madad karoge?",
+      "do": "Read the invitation, then let your child choose Piku's voice. A pigeon can sound however you like.",
+      "little": "Ask: ‘Shall we help Piku?’ A nod, a point, or a funny pigeon face all count.",
+      "big": "Ask: ‘If you sent someone a picture of our city, what would you want them to remember?’",
+      "quiet": "Use a whisper for Piku. Your child can answer with a thumbs-up.",
+      "wiggles": "Make two little wing movements while staying on the floor. No flapping race required.",
+      "parent": "There is no correct performance. If the story isn't landing, skip straight to drawing together."
+    },
+    {
+      "id": "four", "label": "Find four", "title": "The clue with four corners",
+      "read": "‘I remember FOUR towers,’ said Piku. ‘One, two, three... oh, I keep forgetting the last one!’ Piku needs a very good four-finder.",
+      "hinglish": "Charminar ke chaar towers hain. Chalo, ek saath chaar ginte hain.",
+      "do": "Find the four corners of your sheet. Touch each corner once while counting together. Keep the sheet whole.",
+      "little": "You point, your child follows. Count slowly to four; starting again is part of the game.",
+      "big": "Ask your child to show four another way: four fingers, four dots, or two pairs of marks.",
+      "quiet": "Tap the four corners softly with a fingertip. No sounds needed.",
+      "wiggles": "Draw four big imaginary corners in the air with your hands, then return to your paper.",
+      "parent": "One real city fact: Charminar has four minarets. Your paper is a pretend model, not an architectural plan."
+    },
+    {
+      "id": "colour", "label": "Borrow a colour", "title": "A postcard needs a little life",
+      "read": "Piku tilted his head. ‘My picture is still looking rather... paper-coloured. Could we borrow a colour from your room? Only borrow it with our eyes. Nothing needs to leave its home!’",
+      "hinglish": "Apne aas-paas ek rang dhoondo. Bas dekho aur uska rang yaad rakho.",
+      "do": "Choose a colour you can see nearby. Put that colour somewhere on the postcard, or tell the grown-up where it belongs.",
+      "little": "Offer two colours you can already see. Let your child point, choose, or scribble.",
+      "big": "Choose two colours and invent a city detail for each: a shop sign, a kite, a doorway, or anything imagined.",
+      "quiet": "Play an ‘I spy’ game with pointing instead of calling out.",
+      "wiggles": "Take four slow steps together to look for a colour, staying in the same clear room. Looking from your seat works too.",
+      "parent": "No collecting objects, opening cupboards, or climbing. Every part of the mission can be done sitting down."
+    },
+    {
+      "id": "draw", "label": "Make the postcard", "title": "Your Hyderabad, on paper",
+      "read": "‘Four towers, a borrowed colour, and something only you could imagine,’ cooed Piku. ‘That is exactly the kind of postcard I was hoping for.’",
+      "hinglish": "Ab apna Hyderabad banao. Chaar towers, ek rang, aur tumhari apni kahani.",
+      "do": "Make four tall marks for towers, add your colour, then draw one wonderfully made-up thing. A giant mango? A flying bus? This is your story-city.",
+      "little": "A grown-up can make four tall marks first. Your child adds any marks they like. No tracing or neatness needed.",
+      "big": "Add a doorway and invent what Piku might see through it. Tell a one-sentence story about your picture.",
+      "quiet": "Draw together side by side. Piku is happy to watch in silence.",
+      "wiggles": "Before drawing, make yourself as tall as a tower, then as small as a pigeon. Standing is optional.",
+      "parent": "This is art and pretend play, not a test of drawing Charminar correctly. Describe what you notice instead of correcting the picture."
+    },
+    {
+      "id": "goodbye", "label": "Send Piku home", "title": "A very important delivery",
+      "read": "Piku admired the new postcard. ‘This has something my old one didn't: YOUR imagination.’ He tucked the picture under a pretend wing. ‘Next time you see a tower, think of me. And remember to count all four!’",
+      "hinglish": "Piku ka postcard taiyaar hai! Isme tumhari imagination bhi hai.",
+      "do": "Give your postcard a name. Pretend to deliver it to a family member, or keep it somewhere your child chooses. The real picture stays with you.",
+      "little": "Ask: ‘Which part do you want to show me?’ Let your child point or explain in any way.",
+      "big": "Ask: ‘What was real about our city, and what did we make up?’ Both belong in a story, but they are different.",
+      "quiet": "Send Piku off with a silent wave. You can celebrate without a cheer.",
+      "wiggles": "Walk the postcard to its new home together, then give Piku one last imaginary wing-wave.",
+      "parent": "A short adventure counts. If your child stopped earlier, the unfinished postcard can wait for another day."
+    }
+  ]
+}

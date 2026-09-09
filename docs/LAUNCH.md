@@ -2,6 +2,8 @@
 
 The lab and FeedProof are static files. There is no database, model API key, account system or server upload endpoint to configure. Long Arc stays in its existing folder.
 
+**Current featured project: Galli Club.** It uses the same static deployment, at `/galli-club/`, with a public free kit and preview. Its full paid-edition PDF stays outside `dist` in `products/galli-club/`. The FeedProof payment instructions below do not activate Galli Club; see [Galli Club's own launch and validation notes](GALLI_CLUB.md) for the proposed INR digital product. Verify the Galli Club route, nickname/age/quiet options, step navigation, keepsake and both PDF downloads before domain cutover. Family playtesting is still needed before accepting money.
+
 ## Local checks
 
 Use Node.js 22 or newer:

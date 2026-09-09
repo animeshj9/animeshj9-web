@@ -1,0 +1,77 @@
+{
+  "title": "Hyderabad at Home",
+  "edition": "Family playtest edition / September 2026",
+  "price": 299,
+  "currency": "INR",
+  "missions": [
+    {
+      "id": "post-office", "place": "CHARMINAR", "title": "The four-colour post office",
+      "materials": "Two whole sheets of paper and crayons. No printer? Draw the four door boxes on one sheet and use your fingertip as the letter.",
+      "fact": "Charminar is a Hyderabad landmark with four minarets (towers).",
+      "source": "https://hyderabad.telangana.gov.in/tourist-place/charminar/",
+      "opening": "Piku had opened the smallest post office in Hyderabad. It had one pencil, one very proud pigeon, and four letters with no addresses. 'Red door, blue door, yellow door, green door,' he muttered. 'If only colours could tell me where to go!' Then someone knocked. It was you.",
+      "middle": "The first letter smelled of imaginary mangoes. The second had a very wobbly drawing of a kite. The third was an invitation to tea with a cloud. The fourth simply said HELLO. 'These are not ordinary letters,' Piku whispered. 'They need a city with room for extraordinary neighbours.'",
+      "twist": "Just as the post office was ready, a fifth letter arrived. Its envelope had no colour at all. Piku looked worried. 'We only made four doors.' Then he looked at you again. Perhaps a good city could always make room for one more friend.",
+      "ending": "By the end of the afternoon, every letter had a story and every door had a neighbour. Piku hung up a sign: FOUR DOORS, MANY FRIENDS. 'I thought a post office was a place for letters,' he said. 'Now I think it is a place for finding each other.'",
+      "hinglish": "Chaar darwaaze, chaar rang. Har darwaaze ke peeche kaun rehta hai?",
+      "steps": [
+        {"title":"Make four doors","body":"Use the play sheet or draw four big boxes on a whole sheet. Colour the boxes red, blue, yellow and green, or label them with four different marks if you have one pencil. Count the four corners of your paper and connect the idea to Charminar's four towers."},
+        {"title":"Meet the neighbours","body":"Let your child invent someone behind each door. A sleepy cat, a kite-maker or a talking tree can all live here. A grown-up writes or draws one tiny reminder beside each door. Nothing needs to be realistic."},
+        {"title":"Deliver a letter","body":"Read one of Piku's four letters from the story. Your child chooses which neighbour should receive it and why. Slide a fingertip from the post office to that door; no cutting or small tokens are needed. Any thoughtful reason works."},
+        {"title":"Solve the fifth-letter problem","body":"Read the twist. Ask where the uncoloured letter could go. Could two neighbours share it? Could you add a door? Could someone write back? Let the child change the rules of the pretend city."},
+        {"title":"Keep a city memory","body":"On another sheet, draw a postcard from one neighbour to another. A grown-up can take dictation. Read the ending together and add a mark to the explorer passport."}
+      ],
+      "little":"For ages 3–4, start with two doors and add the others if your child wants. Let pointing and scribbles do the storytelling. You do the reading and writing.",
+      "big":"For ages 5–7, let your child invent a delivery rule: kite pictures go to the kite-maker, invitations go to a friend, and mystery letters need a question. Invite them to change a rule and explain what happens.",
+      "quiet":"Keep the entire town on the table or floor. Deliver letters with a fingertip and give each neighbour a silent wave.",
+      "replay":"Swap neighbours, use textures instead of colours, or invite a sibling to run one door. Keep the game cooperative; nobody needs to be the fastest post-person.",
+      "worksheet":"doors"
+    },
+    {
+      "id":"fort", "place":"GOLCONDA", "title":"The fort's secret signal",
+      "materials":"One or two whole sheets of paper, a pencil, and your hands. No printer? Draw three big empty boxes for your signal.",
+      "fact":"Golconda is a fort in Hyderabad. Our secret gate and its code are invented for this story.",
+      "source":"https://hyderabad.telangana.gov.in/tourist-place/golconda-fort/",
+      "opening":"The pretend gate of Golconda would not open. Not for 'please', not for 'pretty please', and definitely not for 'I have brought a banana'. The gatekeeper scratched his head. 'It opens for a hello made of three things. I remember a tap. Or was it a wave?' Piku looked at you. A signal-maker was needed.",
+      "middle":"Beside the gate stood three empty signboards. 'One signal in each space,' said the gatekeeper. 'Then we read them in order.' Piku tried a wave, a tap and a pigeon bow. The gate gave a tiny imaginary creak. Almost! Someone had to remember the order.",
+      "twist":"A new visitor arrived with a very different hello. They did not want to tap, and they did not want to bow. Piku frowned at the three signboards. 'Does that mean they cannot come in?' The gatekeeper shook his head. 'A good hello makes room for the person saying it.'",
+      "ending":"You made a new signal together. The pretend gate opened wide enough for every kind of hello. 'That is a better secret,' Piku said. 'Not a code that keeps people out. A code that helps friends understand each other.'",
+      "hinglish":"Pehle ek ishara, phir doosra, phir teesra. Ab apna secret hello banao.",
+      "steps":[
+        {"title":"Choose your hello","body":"Choose three comfortable actions: a wave, a fingertip touch on paper, a nod, a smile or showing an open hand. All can be done seated. Draw a simple reminder in each code box."},
+        {"title":"Read the code together","body":"A grown-up points to the boxes from left to right. Do the three actions together. In quiet play, use only silent gestures. In a livelier room, one gentle hand tap is optional; no shouting or loud clapping is needed."},
+        {"title":"Take turns at the gate","body":"One person is the visitor and one is the gatekeeper. The visitor follows the picture code; the gatekeeper makes an imaginary opening door with their hands. Swap roles. If a step is forgotten, look at the pictures together."},
+        {"title":"Change the welcome","body":"Read the twist. Invent a signal for a visitor who wants to do something different. Replace any uncomfortable action. Make an alternative seated or pointing-only hello and let the new visitor choose."},
+        {"title":"Send a signal home","body":"Draw your family's secret hello on the second sheet. Ask who else you might teach it to. Read the ending and add a passport mark for making a welcome."}
+      ],
+      "little":"For ages 3–4, use one action, then two. Copy the child first and let them be the gatekeeper. There is no memory test; pointing at the code is encouraged.",
+      "big":"For ages 5–7, swap the first and last code boxes. Ask how the hello changes. Invite the child to make a second code that means 'come and play' or 'I need a quiet moment'.",
+      "quiet":"No echo demonstration is required. Use waves, nods and smiles. The gate opens in your imagination and makes no sound at all.",
+      "replay":"Invent greetings for a pigeon, a grandparent and a sleepy visitor. Ask what each person would find comfortable. This is communication play, not a real security system or instruction to exclude someone.",
+      "worksheet":"signal"
+    },
+    {
+      "id":"lake", "place":"HUSSAIN SAGAR", "title":"A lake full of wishes",
+      "materials":"Two whole sheets of paper and crayons. No printer? Draw a large oval for a pretend lake; use a fingertip instead of a boat. No water or loose pieces.",
+      "fact":"Hussain Sagar is a lake between Hyderabad and Secunderabad. The paper neighbourhood and wish delivery are pretend.",
+      "source":"https://hyderabad.telangana.gov.in/tourist-place/hussain-sagar-lake/",
+      "opening":"Piku unfolded a blue drawing and laid it on the floor. 'I have made a pretend Hussain Sagar,' he announced. 'But something is missing.' There was no one beside the lake, no place to sit, and nowhere for a wish to arrive. 'Could you build a neighbourhood around my lake? A city needs people, not just a puddle of blue.'",
+      "middle":"Soon a tree appeared on the paper shore. Then a bench. Then a place where a very small person could watch the sky. Piku brought a wish: 'I wish every friend had somewhere nice to pause.' He did not throw it into the water. This was a paper lake, and wishes could travel by imagination.",
+      "twist":"A neighbour arrived with a pram. Another used wheels to get around. A third wanted a quiet place away from the busy pretend shop. Piku looked at the paths. 'Our city is nearly ready,' he said. 'But can everyone get to the good bits?'",
+      "ending":"You added a path, made room, and chose a place for the quiet wish to land. Piku settled beside the paper tree. 'I like your city,' he said. 'It has something better than the biggest building: someone who notices what a neighbour might need.'",
+      "hinglish":"Lake ke aas-paas apna shehar banao. Sabke liye thodi jagah rakhein?",
+      "steps":[
+        {"title":"Make a paper lake","body":"Use the play sheet or draw a big oval. Add any colour you like. Explain that the real Hussain Sagar is a lake in our city; this oval is only a pretend map."},
+        {"title":"Add three good places","body":"Around the oval, draw a place to rest, a place to play and a place to meet someone. Your child chooses what these look like. One big scribble can stand for a whole park."},
+        {"title":"Deliver a wish","body":"Take turns saying a small wish for the paper neighbourhood. Move a fingertip along the shore to the place that could help the wish come true. A grown-up can write the child's words. Keep the activity on dry paper."},
+        {"title":"Make room for a neighbour","body":"Read the twist. Trace a route with a fingertip. Is there room for a pram or wheels? Where could a tired visitor stop? Add or change one thing together. No need to solve an actual city-planning problem."},
+        {"title":"Name your little place","body":"Give the paper neighbourhood an invented name. Tell Piku which detail you are proud of. Read the ending and make the last passport mark. Keep the drawing for a future make-believe visit."}
+      ],
+      "little":"For ages 3–4, name one place at a time and let the child choose its colour or point to its spot. A grown-up can draw while the child tells the story.",
+      "big":"For ages 5–7, invent two neighbours with different wishes. Ask how the same space could work for both. Let the child redraw the path instead of defending the first plan.",
+      "quiet":"Sit side by side and trace routes with a fingertip. Wishes may be whispered or drawn; nothing has to be said aloud.",
+      "replay":"Visit the paper neighbourhood in pretend rain, at night or with a new neighbour. What would you change? This is not an outing guide and does not involve playing near real water.",
+      "worksheet":"lake"
+    }
+  ]
+}

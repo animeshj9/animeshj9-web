@@ -6,11 +6,14 @@ Source for the experiments intended for **animeshj9.com**. One repository, one f
 
 | Route | Experiment | Status |
 | --- | --- | --- |
-| `/` | Lab catalogue | Existing index, updated with FeedProof |
-| `/feedproof/` | Google Shopping feed preflight: local CSV/TSV checks, repair report and formatting fixes | MVP; paid pilot intentionally closed |
+| `/` | Lab catalogue | Galli Club featured first |
+| `/galli-club/` | Original Hyderabad story-and-play adventures for ages 3–7 | Playable sample + finished printable edition; sales closed pending playtests |
+| `/feedproof/` | Google Shopping feed preflight: local CSV/TSV checks, repair report and formatting fixes | Earlier experiment; free checker |
 | `/long-arc/` | Local-first thesis notebook | Existing experiment preserved |
 
-FeedProof is a narrow revenue experiment for small WooCommerce agencies. The free checker powers a proposed $49 assisted feed-repair service. Willingness to pay has not been validated. See [product thesis, competitor research and first-ten-user plan](docs/PRODUCT.md).
+**Galli Club** is the current revenue experiment: Hyderabad at-home adventures for parents and little kids, with a proposed ₹299 three-story digital pack. The free sample has quiet-play and age-specific prompts. The 12-page full pack, four-page free kit, and actual-page preview are built. [Product thesis, alternatives, first-ten-family plan and launch notes](docs/GALLI_CLUB.md).
+
+FeedProof remains available; its [earlier product research](docs/PRODUCT.md) is preserved. Neither product has validated paying demand yet.
 
 ## Run and verify
 
@@ -21,7 +24,9 @@ npm test
 npm run check
 ```
 
-Serve `dist/` with any static HTTP server to use the application locally. ES modules require HTTP rather than opening the HTML directly from disk. `core.mjs` is the pure validation/export engine; `app.mjs` handles UI; `config.mjs` holds non-secret pilot settings. Tests cover parsing, rules, fix round trips and export security. Static checks validate routes/assets and DOM bindings; these are not visual/browser QA.
+Serve `dist/` with any static HTTP server to use the applications locally. ES modules require HTTP rather than opening the HTML directly from disk. Tests cover adventure variants, input escaping, feed parsing/rules, exports and asset integrity. Static checks validate routes/assets and DOM bindings; these are not visual/browser QA.
+
+Galli Club's public story is `dist/galli-club/adventure.json`; `play.mjs` handles the pure story/keepsake logic and `app.mjs` handles the parent interface. The authored full pack and PDF live in `products/galli-club/`, outside public assets. Rebuild printables with `python scripts/build-galli-pdfs.py` (ReportLab, Pillow, pypdf and DejaVu fonts); the live site needs no Python.
 
 ## Deployment
 
