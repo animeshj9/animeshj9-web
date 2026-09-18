@@ -33,6 +33,6 @@ Galli Club's public story is `dist/galli-club/adventure.json`; `play.mjs` handle
 
 ## Deployment
 
-GitHub Actions tests main/PR changes, validates the Cloudflare package and saves a static artifact. Deployments go to **user-owned Cloudflare Workers**, not OpenAI Sites, once explicitly enabled. Deployment, DNS and checkout setup are deferred. [Manual launch checklist](docs/LAUNCH.md).
+GitHub Actions tests main/PR changes and packages only public assets into `_site/`. Successful main builds deploy through **GitHub Pages** after Pages is enabled in repository settings. Squarespace keeps domain registration and DNS. No Cloudflare credentials are used. [Manual launch checklist](docs/LAUNCH.md).
 
-Public assets live in `dist/`; documentation and tests stay outside it. The previous hosting manifest is retained for continuity but is not used by this GitHub Actions workflow. No private feeds, customer data, API keys or credentials belong in this repository.
+Public assets live in `dist/`; documentation and tests stay outside it. The previous hosting manifest is retained for continuity but is not used by this GitHub Actions workflow. The old Wrangler configuration is retained but unused. No private feeds, customer data, API keys or credentials belong in this repository.

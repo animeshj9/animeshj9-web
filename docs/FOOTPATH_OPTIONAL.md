@@ -46,4 +46,4 @@ Have a second person review each submitted note against its date, location and e
 
 ## Verify and release
 
-`npm test` checks classifiers, report validation/export and real snapshot integrity. `npm run check` checks scripts, HTML IDs, bindings and local assets. These are not browser/visual QA. Existing GitHub Actions validates the full lab and packages the site. Cloudflare deployment remains gated by `CLOUDFLARE_DEPLOY_ENABLED`; setup is deferred per the owner's instruction. Do not publish via OpenAI Sites.
+`npm test` checks classifiers, report validation/export and real snapshot integrity. `npm run check` checks scripts, HTML IDs, bindings and local assets. These are not browser/visual QA. Existing GitHub Actions validates the full lab and packages the site. Deployment now uses GitHub Pages; enable GitHub Actions as the Pages source and configure the custom domain as described in LAUNCH.md. Do not publish via OpenAI Sites.

@@ -27,41 +27,27 @@ jobs:
         run: npm test
       - name: Validate static assets and JavaScript
         run: npm run check
-      - name: Validate Cloudflare package without deploying
-        env:
-          WRANGLER_SEND_METRICS: 'false'
-        run: npx --yes wrangler@4.130.0 deploy --dry-run
-      - name: Save the tested website
-        uses: actions/upload-artifact@v4
+      - name: Package public website for GitHub Pages
+        run: npm run build
+      - name: Upload tested Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: lab-static-${{ github.sha }}
-          path: dist/
-          retention-days: 14
+          path: _site/
 
   deploy:
     needs: check
-    # Explicitly off until the owner completes the setup guide.
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.CLOUDFLARE_DEPLOY_ENABLED == 'true'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    environment: production
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Check deployment credentials
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "Add the Cloudflare secrets described in docs/LAUNCH.md."
-            exit 1
-          fi
-      - name: Deploy the tested commit to Cloudflare Workers
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          WRANGLER_SEND_METRICS: 'false'
-        run: npx --yes wrangler@4.130.0 deploy
+      - name: Configure Pages (enable GitHub Actions in Settings > Pages first)
+        uses: actions/configure-pages@v5
+      - name: Deploy tested artifact to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -2,7 +2,9 @@
 
 The lab and FeedProof are static files. There is no database, model API key, account system or server upload endpoint to configure. Long Arc stays in its existing folder.
 
-**Current featured project: Galli Club.** It uses the same static deployment, at `/galli-club/`, with a public free kit and preview. Its full paid-edition PDF stays outside `dist` in `products/galli-club/`. The FeedProof payment instructions below do not activate Galli Club; see [Galli Club's own launch and validation notes](GALLI_CLUB.md) for the proposed INR digital product. Verify the Galli Club route, nickname/age/quiet options, step navigation, keepsake and both PDF downloads before domain cutover. Family playtesting is still needed before accepting money.
+**Current featured project: Footpath Optional**, the free Hyderabad pedestrian evidence map at `/footpath-optional/`. It includes OSM data, local field-note exports and an archived photo/design comparison; it has no reviewed field surveys yet.
+
+**Earlier project: Galli Club.** It uses the same static deployment, at `/galli-club/`, with a public free kit and preview. Its full paid-edition PDF stays outside `dist` in `products/galli-club/`. The FeedProof payment instructions below do not activate Galli Club; see [Galli Club's own launch and validation notes](GALLI_CLUB.md) for the proposed INR digital product. Verify the Galli Club route, nickname/age/quiet options, step navigation, keepsake and both PDF downloads before domain cutover. Family playtesting is still needed before accepting money.
 
 ## Local checks
 
@@ -15,24 +17,40 @@ npm run check
 
 No dependency installation is required for application tests. To view the site locally, serve `dist` with an ordinary static HTTP server and open `/feedproof/`; ES modules need HTTP, not a `file://` double-click. Do not expose confidential feeds through a web server directory.
 
-## GitHub Actions and Cloudflare
+## GitHub Actions and GitHub Pages
 
-`.github/workflows/lab.yml` runs tests, validates static assets, dry-runs the Cloudflare package, and uploads a tested static artifact on main-branch pushes and pull requests. Deployment is gated by `CLOUDFLARE_DEPLOY_ENABLED=true`. Without that variable, the deployment job skips rather than failing over missing credentials. No OpenAI Sites deployment is performed by this workflow.
+The selected host is GitHub Pages as of 18 September 2026. Squarespace remains the domain registrar and DNS provider. The previous Cloudflare setup is no longer required; existing Cloudflare secrets/variables are unused. Do not change nameservers for this setup.
 
-When ready:
+The workflow tests all projects, runs static checks, packages only `dist/` into `_site/`, and uploads a Pages artifact. Successful main pushes and manual runs deploy with `actions/deploy-pages`. Pull requests validate/package without deploying. Authentication uses GitHub's built-in token and OIDC; no personal token or hosting secret is needed.
 
-1. Sign into the Cloudflare account that should own the Worker. The ChatGPT Cloudflare plugin is unnecessary. Obtain its account ID and create a scoped Workers deployment API token following [Cloudflare's GitHub Actions guide](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/). Restrict the token to the intended account; do not use a global API key. Do not paste tokens in chat or commit them.
-2. In this GitHub repository, add Actions secrets named `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. The deploy job uses the `production` environment; create it explicitly and restrict it to main if desired. Ensure repository Actions policies permit the referenced GitHub-maintained actions.
-3. Confirm the Worker name `animeshj9-lab` is unused in that account or belongs to this project before first deployment. Change `wrangler.jsonc` if it would collide with another application.
-4. Add repository Actions variable `CLOUDFLARE_DEPLOY_ENABLED` with value `true`. Run “Lab checks and deployment” manually on main. Later main pushes deploy automatically after successful checks.
-5. Verify the returned `workers.dev` URL first: root lab, `/long-arc/`, `/feedproof/`, `/feedproof/privacy.html`, and an unknown URL (should return 404). Run the fictional sample, a clean real export, fixes, and all downloads on desktop and mobile. Verify response headers include the FeedProof CSP.
-6. Only after the replacement works, attach `animeshj9.com` using the current Cloudflare custom-domain setup supported by the account. Squarespace can remain the registrar. This may require changing authoritative nameservers and carefully migrating existing DNS records; don't assume the earlier OpenAI Sites A/TXT records configure your own Cloudflare Worker. Preserve mail records and do not replace DNS blindly. Domain cutover is a separate manual task.
+### One-time owner setup
 
-For routing, see [Cloudflare static assets HTML handling](https://developers.cloudflare.com/workers/static-assets/routing/advanced/html-handling/). Each project is a folder, so its index receives a trailing-slash URL. No catch-all SPA rewrite swallows the other experiments.
+1. Open https://github.com/animeshj9/animeshj9-web/settings/pages . Set Build and deployment → Source to **GitHub Actions**. This private personal repository needs GitHub Pro (or another eligible paid plan). If Pages is unavailable, resolve the plan requirement; do not make the repository public without reviewing its private products and history.
+2. In the same page, set Custom domain to **animeshj9.com** and save BEFORE changing DNS. With Actions deployments, a CNAME file is not required and does not configure the domain. Optionally verify domain ownership in account Settings → Pages using GitHub's exact TXT challenge.
+3. In Squarespace, open Domains → animeshj9.com → DNS → DNS Settings. Replace old WEBSITE records for `@` and `www` with the entries below. Remove conflicting old A/AAAA/CNAME records for those hosts; retain mail and other unrelated records. Keep the current Squarespace nameservers. If nameservers were already moved elsewhere, these records must be changed at the authoritative DNS provider instead.
 
-The retained `.openai/hosting.json` records the previous host's identity only. GitHub Actions uses `wrangler.jsonc`; do not use the old host's credentials for Cloudflare. Existing hosting/DNS was not changed by this build.
+| Type | Host | Value |
+| --- | --- | --- |
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
+| CNAME | www | animeshj9.github.io |
 
-Rollback: disable `CLOUDFLARE_DEPLOY_ENABLED` to stop new deployments. Revert the offending commit with a normal GitHub revert, review tests, then re-enable deployment; or use Cloudflare's supported deployment rollback. Do not force-push/reset unrelated history. Keep the old host until the domain cutover has been verified.
+4. Open Actions → Lab checks and deployment → Run workflow → main (or rerun the failed deployment job after enabling Pages). The `github-pages` environment must permit main deployments. No separate starter workflow is needed.
+5. Wait for DNS checks/certificate issuance, then enable **Enforce HTTPS** in Pages settings. DNS propagation can take up to 24 hours. Verify https://animeshj9.com/ and all four project folders, including https://animeshj9.com/footpath-optional/ . Verify www redirects to the configured apex domain. Do not modify the separate animeshja.in repository or domain.
+
+A deployment attempted before owner setup can fail at Configure Pages; the check job and package still complete. The connector cannot change the repository's Pages admin setting, so it is a manual step.
+
+References: [custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages), [custom domains and DNS](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+
+### Packaging and policies
+
+`npm run build` recreates `_site/` from public `dist/` only. Repository documents, tests and private paid-product files are not published. The package keeps folder URLs and the 404 page. No catch-all SPA rewrite is used. No database, server or API keys are needed.
+
+GitHub Pages does not apply Cloudflare's `_headers` file. The packager carries browser-enforceable CSP directives and Referrer-Policy into early HTML meta tags, preserving the OSM tile origin/referrer and local application restrictions. CSP `frame-ancestors`, X-Frame-Options, Permissions-Policy and X-Content-Type-Options cannot be configured this way; no equivalent custom response-header enforcement is claimed. The package omits `_headers`. The retained `.openai/hosting.json` and `wrangler.jsonc` are historical and unused by this workflow.
+
+Rollback: revert an offending commit normally and let the checks redeploy it. Disable the workflow in Actions if automatic deployments need to stop. A separate GitHub Release is not needed.
 
 ## Activating the $49 pilot
 
