@@ -15,6 +15,23 @@ export async function verifyDashboard(request, env, keyResolver) {
 const fail = (status, message) => new Response(message, { status, headers: { 'Cache-Control': 'no-store' } });
 export async function handle(request, env, authorize = verifyDashboard) {
   const url = new URL(request.url);
+  if (url.hostname === 'api.animeshj9.com') {
+    const cors = { 'Access-Control-Allow-Origin': 'https://animeshja.in', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin', 'Cache-Control': 'no-store' };
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
+    if (url.pathname !== '/coffee/checkout' || request.method !== 'POST') return new Response('Not found', { status: 404, headers: cors });
+    if (request.headers.get('Origin') !== 'https://animeshja.in') return new Response('Forbidden', { status: 403, headers: cors });
+    if (!env.STRIPE_SECRET_KEY) return new Response('Stripe is not configured', { status: 503, headers: cors });
+    const body = new URLSearchParams();
+    body.set('mode', 'payment');
+    body.set('ui_mode', 'embedded');
+    body.set('line_items[0][price]', 'price_1UI4r5G6T0Jc0sjIXNGR6KVk');
+    body.set('line_items[0][quantity]', '1');
+    body.set('return_url', 'https://animeshja.in/?coffee=complete&session_id={CHECKOUT_SESSION_ID}');
+    const stripe = await fetch('https://api.stripe.com/v1/checkout/sessions', { method: 'POST', headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`, 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+    const data = await stripe.json();
+    if (!stripe.ok || !data.client_secret) return new Response(JSON.stringify({ error: 'Unable to start checkout' }), { status: 502, headers: { ...cors, 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ clientSecret: data.client_secret }), { headers: { ...cors, 'Content-Type': 'application/json' } });
+  }
   const folder = Object.hasOwn(sites, url.hostname) ? sites[url.hostname] : null;
   const dashboard = url.hostname === 'animeshj9.com';
   if (!folder && !dashboard && url.hostname !== 'www.animeshj9.com') return fail(404, 'Not found');
