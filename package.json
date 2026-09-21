@@ -6,7 +6,17 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "check": "node scripts/check-static.mjs",
-    "build": "node scripts/build-pages.mjs"
+    "build": "node scripts/build-pages.mjs",
+    "build:worker": "node scripts/build-worker.mjs",
+    "deploy:worker": "npm run build:worker && wrangler deploy --config wrangler.subdomains.jsonc"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "jose": "^6.2.12"
+  },
+  "devDependencies": {
+    "wrangler": "^4.135.0"
+  }
 }

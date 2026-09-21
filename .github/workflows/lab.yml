@@ -23,12 +23,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install locked dependencies
+        run: npm ci
       - name: Unit and regression tests
         run: npm test
       - name: Validate static assets and JavaScript
         run: npm run check
       - name: Package public website for GitHub Pages
         run: npm run build
+      - name: Validate Cloudflare migration bundle
+        run: npm run build:worker && npx wrangler deploy --dry-run --config wrangler.subdomains.jsonc
       - name: Upload tested Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:

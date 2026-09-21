@@ -6,3 +6,6 @@
 node_modules/
 .wrangler/
 _site/
+
+_worker-assets/
+.dev.vars*
