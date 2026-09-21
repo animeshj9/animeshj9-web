@@ -10,7 +10,7 @@ const walk = dir => readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isD
 for (const folder of Object.values(sites)) {
   cpSync(join(root, 'dist/lab-favicon.svg'), join(output, folder, 'lab-favicon.svg'));
   for (const path of walk(join(output, folder)).filter(p => p.endsWith('.html'))) {
-    const html = readFileSync(path, 'utf8').replaceAll('href="../lab-favicon.svg"', 'href="/lab-favicon.svg"').replaceAll('href="../"', 'href="https://animeshj9.com/"');
+    const html = readFileSync(path, 'utf8').replaceAll('href="../lab-favicon.svg"', 'href="/lab-favicon.svg"').replaceAll('href="../"', 'href="https://lab.animeshj9.com/"');
     writeFileSync(path, html);
   }
 }
