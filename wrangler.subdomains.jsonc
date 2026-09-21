@@ -14,6 +14,7 @@
   "routes": [
     { "pattern": "animeshj9.com", "custom_domain": true },
     { "pattern": "www.animeshj9.com", "custom_domain": true },
+    { "pattern": "lab.animeshj9.com", "custom_domain": true },
     { "pattern": "feedproof.animeshj9.com", "custom_domain": true },
     { "pattern": "galli-club.animeshj9.com", "custom_domain": true },
     { "pattern": "footpath-optional.animeshj9.com", "custom_domain": true },
