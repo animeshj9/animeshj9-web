@@ -17,6 +17,7 @@
     { "pattern": "feedproof.animeshj9.com", "custom_domain": true },
     { "pattern": "galli-club.animeshj9.com", "custom_domain": true },
     { "pattern": "footpath-optional.animeshj9.com", "custom_domain": true },
-    { "pattern": "long-arc.animeshj9.com", "custom_domain": true }
+    { "pattern": "long-arc.animeshj9.com", "custom_domain": true },
+    { "pattern": "api.animeshj9.com", "custom_domain": true }
   ]
 }
