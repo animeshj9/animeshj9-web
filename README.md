@@ -20,7 +20,11 @@ FeedProof remains available; its [earlier product research](docs/PRODUCT.md) is 
 
 ## Run and verify
 
-Node.js 22+, no application dependencies:
+Node.js 22+. The existing static apps have no application dependencies; the prepared Cloudflare router uses `jose` for authentication:
+
+```bash
+npm ci
+```
 
 ```bash
 npm test
@@ -30,6 +34,10 @@ npm run check
 Serve `dist/` with any static HTTP server to use the applications locally. ES modules require HTTP rather than opening the HTML directly from disk. Tests cover adventure variants, input escaping, feed parsing/rules, exports and asset integrity. Static checks validate routes/assets and DOM bindings; these are not visual/browser QA.
 
 Galli Club's public story is `dist/galli-club/adventure.json`; `play.mjs` handles the pure story/keepsake logic and `app.mjs` handles the parent interface. The authored full pack and PDF live in `products/galli-club/`, outside public assets. Rebuild printables with `python scripts/build-galli-pdfs.py` (ReportLab, Pillow, pypdf and DejaVu fonts); the live site needs no Python.
+
+## Subdomain migration (prepared)
+
+[Owner-only dashboard and public subdomains: setup and cutover](docs/SUBDOMAINS.md). This is a separate deployment configuration; existing site names, content and GitHub Pages remain unchanged until cutover.
 
 ## Deployment
 
