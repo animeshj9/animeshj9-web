@@ -32,9 +32,10 @@ export async function handle(request, env, authorize = verifyDashboard) {
     if (!stripe.ok || !data.client_secret) return new Response(JSON.stringify({ error: 'Unable to start checkout' }), { status: 502, headers: { ...cors, 'Content-Type': 'application/json' } });
     return new Response(JSON.stringify({ clientSecret: data.client_secret }), { headers: { ...cors, 'Content-Type': 'application/json' } });
   }
+  const lab = url.hostname === 'lab.animeshj9.com';
   const folder = Object.hasOwn(sites, url.hostname) ? sites[url.hostname] : null;
   const dashboard = url.hostname === 'animeshj9.com';
-  if (!folder && !dashboard && url.hostname !== 'www.animeshj9.com') return fail(404, 'Not found');
+  if (!folder && !lab && !dashboard && url.hostname !== 'www.animeshj9.com') return fail(404, 'Not found');
   if (!['GET', 'HEAD'].includes(request.method)) return fail(405, 'Method not allowed');
   if (url.hostname === 'www.animeshj9.com') { url.hostname = 'animeshj9.com'; url.protocol = 'https:'; return Response.redirect(url, 302); }
   if (/%(?:2e|2f|5c|25)|\\/.test(url.pathname.toLowerCase())) return fail(400, 'Invalid path');
@@ -46,10 +47,10 @@ export async function handle(request, env, authorize = verifyDashboard) {
       }
     }
     if (!await authorize(request, env)) return fail(403, 'Dashboard access requires the owner’s Cloudflare Access login.');
-    if (!['/', '/index.html', '/lab.css', '/lab-favicon.svg'].includes(url.pathname)) return fail(404, 'Not found');
+    if (!['/', '/index.html', '/dashboard.css', '/dashboard-favicon.svg'].includes(url.pathname)) return fail(404, 'Not found');
   }
   const internal = new URL(url);
-  internal.pathname = (folder ? `/${folder}` : '') + url.pathname;
+  internal.pathname = (dashboard ? '/dashboard' : folder ? `/${folder}` : '') + url.pathname;
   if (internal.pathname.endsWith('/')) internal.pathname += 'index.html';
   const response = await env.ASSETS.fetch(new Request(internal, { method: request.method }));
   const headers = new Headers(response.headers);
@@ -58,7 +59,7 @@ export async function handle(request, env, authorize = verifyDashboard) {
   headers.set('Referrer-Policy', 'no-referrer');
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   const map = folder === 'footpath-optional';
-  const fonts = dashboard || folder === 'long-arc';
+  const fonts = folder === 'long-arc';
   headers.set('Content-Security-Policy', `default-src 'self'; script-src 'self'; style-src 'self'${map ? " 'unsafe-inline'" : ''}${fonts ? ' https://fonts.googleapis.com' : ''}; font-src 'self'${fonts ? ' https://fonts.gstatic.com' : ''}; img-src 'self' data:${map ? ' https://tile.openstreetmap.org' : ''}; connect-src ${folder === 'feedproof' ? "'none'" : "'self'"}; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none'`);
   if (dashboard) { headers.set('Cache-Control', 'private, no-store'); headers.set('X-Robots-Tag', 'noindex, nofollow'); }
   return new Response(response.body, { status: response.status, headers });
