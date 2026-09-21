@@ -15,15 +15,24 @@ test('each public host only routes into its own directory', async () => {
     assert.equal(assetPaths.at(-1), `/${slug}/lab.css`);
   }
 });
+test('public lab host serves the experiments directory without authentication', async () => {
+  const res = await handle(request('lab.animeshj9.com'), env);
+  assert.equal(res.status, 200);
+  assert.equal(assetPaths.at(-1), '/index.html');
+  await handle(request('lab.animeshj9.com', '/lab.css'), env);
+  assert.equal(assetPaths.at(-1), '/lab.css');
+});
 test('dashboard and its assets deny missing authentication before asset lookup', async () => {
   const before = assetPaths.length;
-  for (const path of ['/', '/index.html', '/lab.css', '/lab-favicon.svg']) assert.equal((await handle(request('animeshj9.com', path), env)).status, 403);
+  for (const path of ['/', '/index.html', '/dashboard.css', '/dashboard-favicon.svg']) assert.equal((await handle(request('animeshj9.com', path), env)).status, 403);
   assert.equal(assetPaths.length, before);
 });
 test('authenticated dashboard is never cacheable and restricts asset paths', async () => {
   const res = await handle(request('animeshj9.com'), env, async () => true);
   assert.equal(res.status, 200);
+  assert.equal(assetPaths.at(-1), '/dashboard/index.html');
   assert.equal(res.headers.get('cache-control'), 'private, no-store');
+  assert.equal(res.headers.get('x-robots-tag'), 'noindex, nofollow');
   assert.equal((await handle(request('animeshj9.com', '/docs/secret'), env, async () => true)).status, 404);
 });
 test('legacy links redirect preserving nested paths and query strings', async () => {
