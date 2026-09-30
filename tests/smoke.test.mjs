@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { runInNewContext } from 'node:vm';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const html = readFileSync(resolve(root, 'dist/index.html'), 'utf8');
@@ -34,6 +35,25 @@ assert.match(experimentCss, /@media \(max-width: 720px\)/);
 assert.match(js, /localStorage\.setItem\(STORAGE_KEY/);
 assert.match(js, /function escapeHtml/);
 assert.match(js, /function exportMarkdown/);
-assert.equal((js.match(/id: '[^']+',/g) || []).length, 5, 'Expected five useful seed theses');
+const seedSource = js.match(/const seedData = (\[[\s\S]*?\n  \]);/);
+assert.ok(seedSource, 'Expected an inspectable seed thesis array');
+const seeds = JSON.parse(JSON.stringify(runInNewContext(seedSource[1])));
+assert.deepEqual(seeds.map(({ id, horizon, confidence }) => ({ id, horizon, confidence })), [
+  { id: 'agent-orchestration', horizon: 2029, confidence: 78 },
+  { id: 'hyderabad-core', horizon: 2032, confidence: 59 }
+], 'Keep the two measurable seed theses and preserve their original identity and conviction');
+for (const thesis of seeds) {
+  assert.match(thesis.title, new RegExp(`By ${thesis.horizon}`));
+  assert.match(thesis.why, /Proposed resolution test:/);
+  assert.ok(thesis.why.includes(`${thesis.horizon}-12-31`), 'Each test needs an exact resolution deadline');
+  assert.ok(thesis.evidence.length && thesis.counters.length && thesis.signals.length);
+  assert.ok(thesis.signals.every(({ state }) => state === 'unseen'), 'Do not seed unverified outcomes as observed');
+}
+assert.match(seeds[0].why, /all attempted runs/);
+assert.match(seeds[0].why, /unsuccessful runs/);
+assert.match(seeds[0].why, /100 consecutive eligible attempts/);
+assert.match(seeds[0].why, /model to choose a subsequent tool action from intermediate results/);
+assert.match(seeds[1].why, /public, dated on-foot audit/);
+assert.match(seeds[1].why, /traffic lane/);
 
 console.log('Smoke tests passed: lab routing, local assets, accessibility hooks, persistence, export, responsive CSS, and seed data.');

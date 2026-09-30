@@ -13,126 +13,57 @@
     Other: 'OTHER'
   };
 
+  // Keep only predictions with an observable outcome and an explicit resolution date.
+  // Broader former starter ideas remain in Git history, not as scored predictions.
   const seedData = [
     {
       id: 'agent-orchestration',
-      title: 'AI agents become orchestration systems, not better chatbots.',
-      why: 'The valuable layer will coordinate knowledge, decisions, tools, and durable work—not merely produce fluent answers.',
+      title: 'By 2029, a public evaluation will show an enterprise agent workflow completing over 90% of attempted runs unaided.',
+      why: 'Proposed resolution test: by 2029-12-31, an independently checkable public report shows a named, fixed-scope, multi-step, tool-using production workflow completing over 90% of all attempted runs without human help. The workflow must use a model to choose a subsequent tool action from intermediate results, rather than only execute a fixed sequence. The proposed evaluation minimum is 100 consecutive eligible attempts, with eligibility, the reporting window and success criteria fixed in advance. Count from the initial request to verified downstream completion; approvals, corrections and handoffs count as help. Human-assisted runs plus unassisted unsuccessful runs must be <10% of the full denominator, including failures, timeouts and abandoned attempts. The report must disclose run counts, dates, outcome checks and an interruption/resumption test. No qualifying report by the deadline fails this public-evidence prediction, not the possibility of private capability. The 100-run protocol is newly proposed; 78% is the unchanged starter conviction, not a recalibrated estimate.',
       domain: 'AI Engineering',
       horizon: 2029,
       confidence: 78,
       status: 'Active',
       created: '2026-09-09',
-      updated: '2026-09-09',
+      updated: '2026-09-30',
       evidence: [
-        'Reliable production systems are converging on explicit state, validators, tool contracts, and human checkpoints.',
-        'Enterprise value appears when the system can finish a workflow and leave an auditable decision trail.',
-        'Model gains improve the planner, but orchestration determines whether a long-running task survives reality.'
+        'OpenAI documents background tasks, status polling and stream resumption: https://developers.openai.com/api/docs/guides/background. These are infrastructure primitives, not evidence that the resolution test has passed.',
+        'Hypothesis to test: explicit task state, tool contracts and validators make completed work auditable, rather than treating a fluent answer as a finished workflow.'
       ],
       counters: [
-        'Frontier models may absorb enough planning and memory that dedicated orchestration becomes temporary scaffolding.',
-        'Integration and governance costs may keep most agent deployments narrow and human-led.'
+        'A workflow that still needs approval, repair or human completion in 10% or more of attempts fails the test; abandoned, timed-out and incorrect runs also count against it.',
+        'A selected demo, a small sample below the proposed minimum, or a report that omits attempted runs, unsuccessful outcomes or the evaluation method cannot resolve this prediction.',
+        'Even a qualifying result would establish one bounded workflow, not broad autonomous enterprise adoption or proof that a separate orchestration layer wins.'
       ],
       signals: [
-        { text: 'Major platforms expose durable runs and resumable task state as first-class primitives.', state: 'watching' },
-        { text: 'A repeatable enterprise workflow completes end-to-end with less than 10% human intervention.', state: 'met' },
-        { text: 'Buyers measure work completed rather than seats, tokens, or time saved.', state: 'watching' }
+        { text: 'A public evaluation fixes its workflow boundary, reporting window and correctness checks before measuring results.', state: 'unseen' },
+        { text: 'Published logs distinguish accepted inputs, verified completions, human assistance and unsuccessful attempts.', state: 'unseen' },
+        { text: 'An interrupted task resumes from recorded state without losing or duplicating completed work.', state: 'unseen' }
       ]
     },
     {
       id: 'hyderabad-core',
-      title: 'Hyderabad’s Financial District compounds into a real urban core.',
-      why: 'The investment case depends less on another tower and more on the district becoming useful after office hours.',
+      title: 'By 2032, a public audit will document a continuous Financial District walking route linking homes, shops, a school and offices.',
+      why: 'Proposed resolution test: by 2032-12-31, a public, dated on-foot audit maps one connected route in Hyderabad’s Financial District linking the public-facing entrances of occupied homes, a trading shop, an operating school and occupied offices. Declare the district study boundary, map source and named endpoints before the audit. Show every segment and crossing: the route must use publicly accessible sidewalks or separated pedestrian paths and formal pedestrian crossings, with no forced walk along a live traffic lane or passage through a private gate. Entry into private grounds is not required. No qualifying audit by the deadline fails this public-evidence prediction; it does not establish that no physical route exists. This tests one connection, not an urban core. The audit protocol is newly proposed; 59% is the unchanged starter conviction, not a recalibrated estimate.',
       domain: 'Hyderabad',
       horizon: 2032,
       confidence: 59,
       status: 'Active',
       created: '2026-09-09',
-      updated: '2026-09-09',
+      updated: '2026-09-30',
       evidence: [
-        'Employment density, schools, and high-income housing already sit unusually close together.',
-        'New mixed-use projects can fill daily-life gaps without requiring a city-scale change.'
+        'The public Footpath Optional project provides a dated OpenStreetMap snapshot and a field-audit method, but records zero reviewed firsthand surveys: https://github.com/animeshj9/animeshj9-web/blob/c2533cf2a4d9dc4496649c3816b3466fbe1bf8a4/docs/FOOTPATH_OPTIONAL.md.',
+        'That snapshot is a starting point for finding candidate links, not proof of current access, usable crossings or a continuous route. No qualifying route is established here.'
       ],
       counters: [
-        'Road-first planning may preserve car dependence even as density rises.',
-        'Infrastructure delivery can lag private construction long enough to cap quality of life and resale demand.'
+        'Separate footpath segments do not pass if a missing link, impassable obstruction or restricted gate forces pedestrians off the route.',
+        'A plan, rendering, construction announcement or map tag without a dated end-to-end field audit cannot resolve the prediction.',
+        'One working connection would not establish district-wide walkability, weekend activity, low vacancy or investment returns.'
       ],
       signals: [
-        { text: 'A continuous, shaded walking route connects homes, shops, schools, and offices.', state: 'watching' },
-        { text: 'Weekend footfall becomes visible outside malls and gated communities.', state: 'unseen' },
-        { text: 'Commercial vacancy stays low while new residential supply is absorbed.', state: 'watching' }
-      ]
-    },
-    {
-      id: 'authentic-writing',
-      title: 'Writing becomes more valuable as generation becomes cheaper.',
-      why: 'When competent prose is abundant, lived experience, judgment, and a recognizable mind become the scarce inputs.',
-      domain: 'Writing',
-      horizon: 2029,
-      confidence: 71,
-      status: 'Active',
-      created: '2026-09-09',
-      updated: '2026-09-09',
-      evidence: [
-        'Readers increasingly evaluate the provenance and stakes behind a piece, not only its surface quality.',
-        'Distinctive personal archives compound: each essay gives the next one context and credibility.'
-      ],
-      counters: [
-        'Distribution may dominate authorship so completely that original voice captures little economic value.',
-        'Readers may accept synthetic personalities if the work is consistently useful.'
-      ],
-      signals: [
-        { text: 'Returning readers grow faster than search-driven visits.', state: 'watching' },
-        { text: 'Essays with concrete personal stakes outperform generic explainers.', state: 'watching' },
-        { text: 'Paid subscribers cite voice or worldview as the reason they stay.', state: 'unseen' }
-      ]
-    },
-    {
-      id: 'patient-capital',
-      title: 'India’s wealth creation remains broad enough for patient index exposure.',
-      why: 'If national productivity and formalization keep compounding, diversified ownership should beat repeated attempts to identify each winner.',
-      domain: 'Investing',
-      horizon: 2036,
-      confidence: 64,
-      status: 'Watching',
-      created: '2026-09-09',
-      updated: '2026-09-09',
-      evidence: [
-        'Formal savings continue moving toward market-linked assets from physical stores of wealth.',
-        'A broad index automatically replaces declining businesses with emerging leaders.'
-      ],
-      counters: [
-        'Starting valuations can absorb years of otherwise strong earnings growth.',
-        'Index concentration may create less diversification than the headline number implies.'
-      ],
-      signals: [
-        { text: 'Earnings growth closes the gap with headline index valuations.', state: 'watching' },
-        { text: 'Domestic participation persists through a meaningful drawdown.', state: 'unseen' },
-        { text: 'Market leadership broadens beyond a small group of large companies.', state: 'unseen' }
-      ]
-    },
-    {
-      id: 'institutional-memory',
-      title: 'Institutions fail when they lose the memory of why a rule exists.',
-      why: 'History is most useful when it preserves the causal story behind a norm—not when it merely preserves the norm.',
-      domain: 'History',
-      horizon: 2035,
-      confidence: 67,
-      status: 'Watching',
-      created: '2026-09-09',
-      updated: '2026-09-09',
-      evidence: [
-        'Rules that outlive their original threat tend to become ritual, then attract indiscriminate removal.',
-        'Teams repeat old failures when decisions retain outcomes but discard alternatives and context.'
-      ],
-      counters: [
-        'Institutional memory can also fossilize old assumptions and give incumbents rhetorical cover.',
-        'Some systems improve precisely because a new generation ignores inherited explanations.'
-      ],
-      signals: [
-        { text: 'Decision logs record rejected alternatives and predicted failure modes.', state: 'unseen' },
-        { text: 'Postmortems are referenced before similar high-stakes changes.', state: 'watching' },
-        { text: 'Rules carry review dates and explicit origin stories.', state: 'unseen' }
+        { text: 'A candidate route is mapped with named endpoints and a segment-by-segment inventory of missing pedestrian links.', state: 'unseen' },
+        { text: 'Dated field evidence shows missing footpath links and crossings becoming usable and publicly accessible.', state: 'unseen' },
+        { text: 'Shade is recorded by segment, date and time as a comfort indicator; it is not treated as proof of connectivity.', state: 'unseen' }
       ]
     }
   ];
