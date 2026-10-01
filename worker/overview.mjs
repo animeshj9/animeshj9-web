@@ -1,3 +1,4 @@
+import { readStripeBilling, observedMode, withholdConflictingBilling } from './billing.mjs';
 // Owner-only response data. Never import this module into public browser code.
 export const inventory = [
   { id: 'profile', name: 'Personal site', url: 'https://animeshja.in/', kind: 'Identity', description: 'Profile, work and coffee support' },
@@ -56,6 +57,7 @@ export async function readStripeSummary(env, { fetchImpl = fetch, now = Date.now
     }
     const modes = new Set(charges.map(charge => charge.livemode));
     const mode = modes.size === 1 ? (modes.has(true) ? 'live' : 'test') : modes.size ? 'mixed' : 'unverified';
+    if (mode === 'mixed') return { ...base, mode, status: 'unavailable', message: 'Live/test charge mode evidence conflicts. Amounts are withheld.', nextStep: 'Verify the existing runtime connection; no broader access was requested.' };
     return { ...base, status: more ? 'partial' : 'connected', mode, totals: summarizeCharges(charges), checkedAt: new Date(now).toISOString(), message: more ? 'Partial result: more than 300 charge records in this window. Totals below are incomplete.' : charges.length ? 'Successful captured payments from the last 30 days.' : 'No charge records returned for the last 30 days; account mode cannot be verified from an empty result.', scope: 'All payments in the connected Stripe account, not only coffee. Refunds are cumulative against these charges. Excludes Stripe fees, payouts, disputes and refunds on older charges. Currencies are never combined.' };
   } catch {
     return { ...base, status: 'unavailable', message: 'Stripe reporting timed out or returned an unreadable result.', nextStep: 'Refresh to retry. No zero total has been inferred.' };
@@ -64,6 +66,8 @@ export async function readStripeSummary(env, { fetchImpl = fetch, now = Date.now
 
 export async function readOverview(env, options = {}) {
   const now = options.now ?? Date.now();
+  const billingPromise = readStripeBilling(env, { ...options, now });
+  const chargesPromise = readStripeSummary(env, { ...options, now });
   const sites = await Promise.all(inventory.map(async ({ asset, ...site }) => {
     if (!asset) return { ...site, state: 'external', visits: null };
     try {
@@ -71,14 +75,17 @@ export async function readOverview(env, options = {}) {
       return { ...site, state: response.ok ? 'asset_ready' : 'asset_missing', visits: null };
     } catch { return { ...site, state: 'asset_unavailable', visits: null }; }
   }));
+  let [charges, billing] = await Promise.all([chargesPromise, billingPromise]);
+  const connectionMode = observedMode([charges.mode, billing.mode]);
+  if (connectionMode === 'mixed') { billing = withholdConflictingBilling(billing); charges = { ...charges, status: 'unavailable', totals: null, message: 'Live/test mode evidence conflicts. Financial counts and amounts are withheld.' }; }
   return {
     generatedAt: new Date(now).toISOString(),
     sites,
     api: { ownerOverview: 'responding', publicHealth: 'not_checked', healthPath: 'https://api.animeshj9.com/health', checkout: env.STRIPE_SECRET_KEY ? 'configured' : 'not_configured' },
     sources: {
       traffic: { status: 'not_connected', pageviews: null, visitors: null, message: 'Visit reporting is not connected. Missing data does not mean zero visitors.', collection: 'A Cloudflare Insights beacon was observed on the live lab on 1 October 2026. Delivery and historical totals are unverified.', nextStep: 'Review Cloudflare Web Analytics for collection and hostname coverage, then authorize an appropriate read-only reporting connection. Edge requests and human visits must remain separate.' },
-      stripe: await readStripeSummary(env, { ...options, now }),
-      substack: { status: 'not_connected', subscribers: null, message: 'Subscriber, email-open and publication revenue data are not connected.', nextStep: 'Connect an authorized publication reporting source or import an owner-provided aggregate export. Public essays do not reveal private subscriber totals.' },
+      stripe: { ...charges, billing, connectionMode, message: charges.status === 'connected' && Array.isArray(charges.totals) && charges.totals.length === 0 ? 'No captured payment totals in the last 30 days. Current subscriptions and paid payouts are reported separately below.' : charges.message },
+      substack: { status: 'not_connected', subscribers: null, message: 'Substack audience totals, email opens and engagement are not connected. Stripe billing is reported separately when available.', nextStep: 'Connect an authorized publication reporting source or import an owner-provided aggregate export. Stripe subscriptions are not the full Substack audience, and billing is not attributed to a publication without verified source evidence.' },
       x: { status: 'not_connected', impressions: null, message: 'Post impressions and engagement reporting are not connected.', nextStep: 'Connect an authorized read-only X reporting source or import an aggregate export. No scraping or paid API subscription has been enabled.' },
     },
     upkeep: { cadence: 'Weekly, on Mondays', scope: 'Review live routes, API health, deployment checks, source freshness, privacy boundaries and one useful next improvement.', checks: ['After each release: tests, static checks, both deployment results and live smoke checks', 'Weekly: traffic/source health, broken links, private-route isolation and experiment backlog', 'Monthly: dependency review, storage/export checks and retire or improve low-use experiments'] },

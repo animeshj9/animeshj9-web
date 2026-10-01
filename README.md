@@ -38,7 +38,7 @@ Galli Club's public story is `dist/galli-club/adventure.json`; `play.mjs` handle
 
 ## Owner dashboard and operations
 
-The root domain is an owner-only control plane with authenticated runtime reporting. Public lab routes cannot serve dashboard assets; Pages packaging also excludes them. See [current deployment, source definitions, privacy boundaries and upkeep](docs/UPKEEP.md). Traffic, Substack and X reporting remain explicitly unconnected; no missing count is represented as zero.
+The root domain is an owner-only control plane with authenticated runtime reporting. Public lab routes cannot serve dashboard assets; Pages packaging also excludes them. See [current deployment, source definitions, privacy boundaries and upkeep](docs/UPKEEP.md). Traffic, Substack audience and X reporting remain explicitly unconnected; no missing count is represented as zero. Stripe charges, current subscriptions and paid payouts are separate runtime metrics, with private account/mode evidence and explicit completeness flags.
 
 ## Subdomain migration (historical setup)
 

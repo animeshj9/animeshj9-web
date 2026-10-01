@@ -34,9 +34,25 @@ Pagination reads at most three pages of 100 charge records with an 8-second over
 
 Reference: [Stripe List charges](https://docs.stripe.com/api/charges/list).
 
+#### Current subscriptions, payouts and runtime identity
+
+The dashboard also performs GET-only reads through the same existing runtime key, after owner authentication:
+
+- `/v1/account`: exposes only the runtime account ID to the private owner response. No hardcoded expected account ID, private figures, email, business details or bank data enter public source. A newly connected external Stripe plugin is not proof that it uses the same account as this backend. If the account read is denied, identity remains unverified; no key scope is broadened. The self-account endpoint is implemented in [Stripe's official SDK](https://github.com/stripe/stripe-go/blob/master/account_service.go).
+- `/v1/subscriptions?status=active` and `status=trialing`: independent current-state lists, not limited to the 30-day charge window. Active and trialing counts stay separate. An active subscription can exist with no charge in the last month, especially with annual billing. Neither count is the full publication audience.
+- Recurring amounts are fixed licensed per-unit catalog subtotals multiplied by quantity, grouped by currency, interval and interval count. No MRR conversion or cash-revenue claim. Catalog amounts retain any inclusive tax and do not apply invoice-level discounts, tax adjustments, credits or fees. Metered/tiered/transformed/fractional-unit prices, truncated item lists and paused collection are excluded or flagged. A Price currency differing from its subscription currency is excluded rather than substituting the Price's default currency; no extra price grants or lookups are added. Both explicit cancellation dates and cancel-at-period-end are counted without double-counting.
+- `/v1/payouts?status=paid&arrival_date[gte]=...&arrival_date[lte]=...`: filters by **expected arrival date** within the trailing 30 × 24 hours. It deliberately does not filter by payout creation date, so an older-created payout arriving in the window is not missed. Values are separate from charge totals. Label: **Stripe marked paid; bank receipt not verified**. Signed payout/reversal amounts remain per currency; no bank destination or payout identifiers are returned.
+
+Each list is capped at three pages of 100 records and the additional billing reads share an eight-second timeout. A truncated count is a lower bound with a `+`; monetary values are observed subtotals and carry explicit completeness flags. Read failures remain null/unknown independently per section. An incomplete nested subscription-item list also prevents a complete-price claim.
+
+Mode is evidence from returned charge, subscription or payout objects, never from inspecting or printing a key. Empty lists alone cannot establish mode. Conflicting live/test evidence causes financial counts and amounts to be withheld rather than combined. All responses remain owner-only/private/no-store, and raw Stripe objects are discarded server-side.
+
+References: [List subscriptions](https://docs.stripe.com/api/subscriptions/list), [List payouts and arrival-date filters](https://docs.stripe.com/api/payouts/list), [Multi-currency prices](https://docs.stripe.com/products-prices/manage-prices).
+
+
 ### Substack and X
 
-Reporting is not connected. Public essays and visible posts are not proxies for subscribers, email opens, impressions or revenue. Add only an authorized source, or an owner-provided aggregate export, behind the existing private boundary. Before rendering imported data, validate period, timezone, definitions, freshness, account identity and coverage. Never merge unlike metric definitions or upload private exports into this public repository.
+Substack audience reporting and X reporting are not connected. Stripe billing is shown separately when the existing runtime connection permits it; it is not attributed to a publication without verified source evidence. Public essays and visible posts are not proxies for audience totals, email opens, impressions or revenue. Add only an authorized source, or an owner-provided aggregate export, behind the existing private boundary. Before rendering imported data, validate period, timezone, definitions, freshness, account identity and coverage. Never merge unlike metric definitions or upload private exports into this public repository.
 
 ## Cadence
 
