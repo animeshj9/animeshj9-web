@@ -8,7 +8,7 @@ test('Pages package preserves public routes and browser policies while excluding
   execFileSync(process.execPath,['scripts/build-pages.mjs'],{cwd:root});
   const path=p=>resolve(root,'_site',p);
   for(const name of ['index.html','404.html','.nojekyll','footpath-optional/index.html','feedproof/index.html','galli-club/index.html','long-arc/index.html'])assert.ok(existsSync(path(name)),name);
-  for(const name of ['products','docs','tests','.github','_headers'])assert.ok(!existsSync(path(name)),name);
+  for(const name of ['products','docs','tests','.github','_headers','dashboard'])assert.ok(!existsSync(path(name)),name);
   const map=readFileSync(path('footpath-optional/index.html'),'utf8');
   assert.match(map,/http-equiv="Content-Security-Policy"/);
   assert.match(map,/https:\/\/tile.openstreetmap.org/);

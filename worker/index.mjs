@@ -1,5 +1,6 @@
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { sites } from './sites.mjs';
+import { readOverview } from './overview.mjs';
 const keySets = new Map();
 export async function verifyDashboard(request, env, keyResolver) {
   const issuer = env.ACCESS_ISSUER;
@@ -16,6 +17,7 @@ const fail = (status, message) => new Response(message, { status, headers: { 'Ca
 export async function handle(request, env, authorize = verifyDashboard) {
   const url = new URL(request.url);
   if (url.hostname === 'api.animeshj9.com') {
+    if (url.pathname === '/health' && ['GET', 'HEAD'].includes(request.method)) return new Response(request.method === 'HEAD' ? null : JSON.stringify({ service: 'animeshj9-api', status: 'ok' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
     const cors = { 'Access-Control-Allow-Origin': 'https://animeshja.in', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin', 'Cache-Control': 'no-store' };
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (url.pathname !== '/coffee/checkout' || request.method !== 'POST') return new Response('Not found', { status: 404, headers: cors });
@@ -39,6 +41,10 @@ export async function handle(request, env, authorize = verifyDashboard) {
   if (!['GET', 'HEAD'].includes(request.method)) return fail(405, 'Method not allowed');
   if (url.hostname === 'www.animeshj9.com') { url.hostname = 'animeshj9.com'; url.protocol = 'https:'; return Response.redirect(url, 302); }
   if (/%(?:2e|2f|5c|25)|\\/.test(url.pathname.toLowerCase())) return fail(400, 'Invalid path');
+  try { url.pathname = decodeURIComponent(url.pathname); } catch { return fail(400, 'Invalid path'); }
+  if (url.pathname.includes('//')) return fail(400, 'Invalid path');
+  if (lab && /^\/(?:dashboard|api)(?:\/|$)/.test(url.pathname)) return fail(404, 'Not found');
+  if (lab && url.pathname === '/after-the-demo') { url.pathname += '/'; return Response.redirect(url, 302); }
   if (dashboard) {
     for (const [host, slug] of Object.entries(sites)) {
       if (url.pathname === `/${slug}` || url.pathname.startsWith(`/${slug}/`)) {
@@ -47,7 +53,11 @@ export async function handle(request, env, authorize = verifyDashboard) {
       }
     }
     if (!await authorize(request, env)) return fail(403, 'Dashboard access requires the owner’s Cloudflare Access login.');
-    if (!['/', '/index.html', '/dashboard.css', '/dashboard-favicon.svg'].includes(url.pathname)) return fail(404, 'Not found');
+    if (url.pathname === '/api/overview') {
+      if (request.method === 'HEAD') return new Response(null, { headers: { 'Cache-Control': 'private, no-store', 'Content-Type': 'application/json', 'X-Robots-Tag': 'noindex, nofollow' } });
+      return new Response(JSON.stringify(await readOverview(env)), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', 'X-Content-Type-Options': 'nosniff', 'Vary': 'Cf-Access-Jwt-Assertion' } });
+    }
+    if (!['/', '/index.html', '/dashboard.css', '/dashboard-favicon.svg', '/dashboard.mjs', '/money.mjs'].includes(url.pathname)) return fail(404, 'Not found');
   }
   const internal = new URL(url);
   internal.pathname = (dashboard ? '/dashboard' : folder ? `/${folder}` : '') + url.pathname;
@@ -60,7 +70,8 @@ export async function handle(request, env, authorize = verifyDashboard) {
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   const map = folder === 'footpath-optional';
   const fonts = folder === 'long-arc';
-  headers.set('Content-Security-Policy', `default-src 'self'; script-src 'self'; style-src 'self'${map ? " 'unsafe-inline'" : ''}${fonts ? ' https://fonts.googleapis.com' : ''}; font-src 'self'${fonts ? ' https://fonts.gstatic.com' : ''}; img-src 'self' data:${map ? ' https://tile.openstreetmap.org' : ''}; connect-src ${folder === 'feedproof' ? "'none'" : "'self'"}; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none'`);
+  const localOnly = folder === 'feedproof' || (lab && url.pathname.startsWith('/after-the-demo/'));
+  headers.set('Content-Security-Policy', `default-src 'self'; script-src 'self'; style-src 'self'${map ? " 'unsafe-inline'" : ''}${fonts ? ' https://fonts.googleapis.com' : ''}; font-src 'self'${fonts ? ' https://fonts.gstatic.com' : ''}; img-src 'self' data:${map ? ' https://tile.openstreetmap.org' : ''}; connect-src ${localOnly ? "'none'" : "'self'"}; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none'`);
   if (dashboard) { headers.set('Cache-Control', 'private, no-store'); headers.set('X-Robots-Tag', 'noindex, nofollow'); }
   return new Response(response.body, { status: response.status, headers });
 }

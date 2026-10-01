@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Did AI actually save you time? A private, local-first workbench for measuring prompting, review, rework, quality, and the cost of AI-assisted tasks.">
+  <meta name="theme-color" content="#f5f3ed">
+  <title>After the Demo — an AI effort workbench</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#workbench">Skip to workbench</a>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="lab-link" href="https://lab.animeshj9.com/" aria-label="Back to the lab"><span class="lab-mark" aria-hidden="true">a<span> / </span></span> THE LAB</a>
+      <nav aria-label="Page"><a href="#method">The method <span aria-hidden="true">↗</span></a><span class="local-badge"><span aria-hidden="true"></span> Local-first experiment</span></nav>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div><p class="eyebrow">A small experiment in honest measurement</p><h1 id="page-title">After the <span>demo.</span></h1><p class="lede">The first draft is only part of the work.<br>Did AI actually save you time?</p></div>
+        <aside class="intro-note"><span class="note-number" aria-hidden="true">01 /</span><p>Count the prompting.<br>Count the checking.<br><strong>Count the fixing.</strong></p><span class="note-rule"></span><p class="small">Measure a real task. Repeat it.<br>Let the results speak.</p></aside>
+      </section>
+
+      <section class="workbench" id="workbench" aria-labelledby="workbench-title">
+        <div class="section-heading"><div><p class="eyebrow">Your evidence, at a glance</p><h2 id="workbench-title">The workbench</h2></div><button type="button" class="button button-light" id="sample-toggle" aria-pressed="false">Explore a synthetic example <span aria-hidden="true">↗</span></button></div>
+        <div class="sample-banner" id="sample-banner" hidden><span class="sample-pill">Synthetic example</span><p>One fictional trial, for illustration only. It is never saved or included in your results or exports.</p><button id="sample-close" type="button" class="text-button">Back to my results <span aria-hidden="true">→</span></button></div>
+        <div id="storage-warning" class="warning" role="status" hidden></div>
+        <div class="summary-grid" aria-label="Trial summary">
+          <article class="metric metric-primary"><p>Net time saved <span aria-hidden="true">↗</span></p><div class="metric-value" id="saved-value">—</div><div class="metric-detail" id="saved-detail">Your first measurement starts here</div></article>
+          <article class="metric"><p>Quality pass rate</p><div class="metric-value" id="quality-value">—</div><div class="metric-detail" id="quality-detail">Set the same bar for both methods</div></article>
+          <article class="metric"><p>Total tool cost <span class="currency">USD</span></p><div class="metric-value" id="cost-value">—</div><div class="metric-detail" id="cost-detail">Incremental cost across your trials</div></article>
+        </div>
+        <div class="evidence-strip"><span class="status-dot" aria-hidden="true"></span><p id="evidence-note">No observations yet. Start with one task you can measure both ways.</p></div>
+
+        <div class="workspace-grid">
+          <section class="entry-panel" aria-labelledby="entry-title">
+            <div class="panel-heading"><span class="step-index">01</span><div><h3 id="entry-title">Record a trial</h3><p>Same task. Same scope. Same quality bar.</p></div></div>
+            <form id="trial-form">
+              <div class="field"><label for="task">What did you work on?</label><input id="task" name="task" type="text" required maxlength="100" placeholder="e.g. Turn notes into a project brief" list="task-names" autocomplete="off"><datalist id="task-names"></datalist><p class="field-hint">Use the same name to track repeated attempts.</p></div>
+              <div class="baseline-field"><div class="field"><label for="baseline">Without AI <span>baseline</span></label><div class="input-unit"><input id="baseline" name="baseline" type="number" min="0.01" max="100000" step="0.01" required inputmode="decimal" placeholder="45"><span>min</span></div><p class="field-hint">Time the equivalent completed task without AI. Prefer an observed baseline to a guess.</p></div></div>
+              <fieldset class="time-fields"><legend>With AI <span>include the whole attempt</span></legend>
+                <div class="field"><label for="prompting"><i class="stage-dot prompting" aria-hidden="true"></i>Prompting</label><div class="input-unit"><input id="prompting" name="prompting" type="number" min="0" max="100000" step="0.01" required inputmode="decimal" placeholder="0"><span>min</span></div></div>
+                <div class="field"><label for="generation"><i class="stage-dot generation" aria-hidden="true"></i>Generation / waiting</label><div class="input-unit"><input id="generation" name="generation" type="number" min="0" max="100000" step="0.01" required inputmode="decimal" placeholder="0"><span>min</span></div></div>
+                <div class="field"><label for="review"><i class="stage-dot review" aria-hidden="true"></i>Review & verification</label><div class="input-unit"><input id="review" name="review" type="number" min="0" max="100000" step="0.01" required inputmode="decimal" placeholder="0"><span>min</span></div></div>
+                <div class="field"><label for="rework"><i class="stage-dot rework" aria-hidden="true"></i>Corrections & rework</label><div class="input-unit"><input id="rework" name="rework" type="number" min="0" max="100000" step="0.01" required inputmode="decimal" placeholder="0"><span>min</span></div></div>
+                <p class="field-hint span-all">Use non-overlapping minutes. Include waiting only when it occupies or blocks your work; enter 0 for a stage you did not need.</p>
+              </fieldset>
+              <fieldset class="quality-fields"><legend>Did the final result meet your quality bar?</legend><div class="radio-pair"><label><input type="radio" name="quality" value="pass" required><span>Passed <span aria-hidden="true">✓</span></span></label><label><input type="radio" name="quality" value="fail"><span>Not yet <span aria-hidden="true">↻</span></span></label></div></fieldset>
+              <div class="field"><label for="cost">Tool cost <span>USD, this attempt only</span></label><div class="input-unit cost-input"><span>$</span><input id="cost" name="cost" type="number" min="0" max="1000000" step="0.0001" required inputmode="decimal" value="0"></div><p class="field-hint">Use incremental cost, or a consistent share of a subscription. Keep one method across trials.</p></div>
+              <div class="field"><label for="notes">Quality bar & observations <span>optional</span></label><textarea id="notes" name="notes" rows="2" maxlength="500" placeholder="What had to be true for this to count as done?"></textarea></div>
+              <p class="form-error" id="form-error" role="alert" hidden></p>
+              <button type="submit" class="button button-primary" id="save-trial">Add to my results <span aria-hidden="true">+</span></button>
+              <p class="form-footnote">Saved only in this browser. No uploads. No model calls.</p>
+            </form>
+          </section>
+
+          <div class="analysis-column">
+            <section class="breakdown-panel" aria-labelledby="breakdown-title"><div class="panel-heading"><span class="step-index">02</span><div><h3 id="breakdown-title">Where the minutes went</h3><p id="breakdown-subtitle">A fair comparison includes the invisible work.</p></div></div><div class="bar-chart" id="bar-chart"><div class="chart-empty"><span aria-hidden="true">—</span><p>Your baseline and full AI effort<br>will appear side by side.</p></div></div><ul class="chart-legend"><li><i class="stage-dot prompting" aria-hidden="true"></i>Prompting</li><li><i class="stage-dot generation" aria-hidden="true"></i>Waiting</li><li><i class="stage-dot review" aria-hidden="true"></i>Review</li><li><i class="stage-dot rework" aria-hidden="true"></i>Rework</li></ul><p class="chart-note" id="hidden-work-note">Review and rework are work. Keep them in the total.</p></section>
+            <section class="value-panel" aria-labelledby="value-title"><div class="value-heading"><h3 id="value-title">What is that time worth?</h3><span class="optional-tag">Optional lens</span></div><p>Put a value on the time you measured. No annualized promises.</p><label for="hourly-value">Your time value <span>USD / hour</span></label><div class="hourly-input"><span>$</span><input id="hourly-value" type="number" min="0" max="1000000" step="0.01" inputmode="decimal" placeholder="Not set" aria-describedby="value-explainer"><span>/ hr</span></div><p id="hourly-error" class="form-error" role="alert" hidden></p><div class="value-result"><span>Measured time value − tool cost</span><strong id="net-value">—</strong></div><p class="small" id="value-explainer">Add a trial and an hourly value to see this estimate.</p><p class="break-even" id="break-even">Break-even is shown only when measured time saved is positive.</p></section>
+            <aside class="privacy-note"><span aria-hidden="true">↳</span><div><strong>A notebook, not a leaderboard.</strong><p>Your entries stay in this browser’s local storage. They are not sent to a server. Export a backup before clearing browser data or switching devices.</p></div></aside>
+          </div>
+        </div>
+
+        <section class="history-section" aria-labelledby="history-title"><div class="section-heading history-heading"><div><p class="eyebrow">Repeated work reveals the pattern</p><h2 id="history-title">Trial log <span id="trial-count">00</span></h2></div><div class="export-actions"><button class="button button-small" id="export-csv" type="button" disabled>Export CSV <span aria-hidden="true">↓</span></button><button class="button button-small" id="export-json" type="button" disabled>Export JSON <span aria-hidden="true">↓</span></button></div></div><div id="trial-list" class="trial-list"><div class="history-empty"><span aria-hidden="true">+</span><h3>No grand claims. Just your first trial.</h3><p>Record a task above, then try it again. Small samples are observations, not conclusions.</p></div></div><div class="history-footer"><p id="export-note">Exports contain your real trials only. All costs are USD.</p><button class="text-button danger" id="clear-data" type="button" disabled>Clear my data</button></div></section>
+      </section>
+
+      <section class="method-section" id="method" aria-labelledby="method-title"><div><p class="eyebrow">A little rigor goes a long way</p><h2 id="method-title">Measure the finish.<br>Not the first draft.</h2></div><div class="method-content"><p class="formula">Baseline − (prompting + waiting + review + rework)<br><strong>= net time saved</strong></p><ol><li><strong>Define “done” first.</strong> Use equivalent scope and the same quality check for the baseline and assisted attempt. Choose a narrow, repeatable task.</li><li><strong>Log the full attempt.</strong> Count each minute once. Include failed attempts and their cost. A negative result means AI took longer.</li><li><strong>Keep quality beside speed.</strong> Net time saved includes every attempt, even quality failures. A faster failed result is not a usable deliverable.</li><li><strong>Repeat before you generalize.</strong> Learning, task difficulty, and order affect results. Try multiple comparable tasks and alternate methods. This log is descriptive, not a causal study or a forecast.</li></ol><details><summary>How the optional value estimate works</summary><p>Estimated value = (net minutes saved ÷ 60 × your hourly value) − tool cost. Break-even hourly value = tool cost ÷ hours saved, available only when hours saved are positive. Neither calculation adjusts for output quality, unpaid work, opportunity cost, or whether you can actually use the saved time. Both apply only to the trials recorded here.</p></details></div></section>
+    </main>
+    <footer class="site-footer"><a href="https://lab.animeshj9.com/">← Back to the lab</a><p>After the Demo <span> / </span> A tool for better questions.</p><span>Built to stay on your side of the screen.</span></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-description"><form method="dialog"><p class="eyebrow">Your local notebook</p><h2 id="confirm-title">Clear all your data?</h2><p id="confirm-description">This deletes your real trials and hourly value from this browser. It cannot be undone. Export a backup first if you want to keep them.</p><div class="dialog-actions"><button class="button button-light" value="cancel" autofocus>Keep my data</button><button class="button button-danger" value="confirm">Clear everything</button></div></form></dialog>
+  <noscript><div class="noscript">This local workbench needs JavaScript to record and calculate trials. Your data stays in your browser.</div></noscript>
+</body>
+</html>

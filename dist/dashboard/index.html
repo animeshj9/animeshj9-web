@@ -1,50 +1,39 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0b1020" />
-    <meta name="robots" content="noindex,nofollow" />
-    <meta name="description" content="Private control plane for Animesh's sites and experiments." />
-    <title>Animesh / Control Plane</title>
-    <link rel="icon" href="./dashboard-favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./dashboard.css" />
-  </head>
-  <body>
-    <div class="shell">
-      <header>
-        <a class="brand" href="/" aria-label="Control plane home"><span>A/9</span> CONTROL PLANE</a>
-        <div class="private"><i aria-hidden="true"></i> PRIVATE</div>
-      </header>
-      <main>
-        <section class="intro">
-          <p>ANIMESHJ9.COM</p>
-          <h1>Everything,<br />in one place.</h1>
-          <span>Sites, experiments, and infrastructure.</span>
-        </section>
-        <section aria-labelledby="sites-title">
-          <div class="section-head"><h2 id="sites-title">Sites</h2><span>03</span></div>
-          <div class="grid sites">
-            <a class="card primary" href="https://animeshja.in" target="_blank" rel="noopener noreferrer"><small>IDENTITY</small><strong>animeshja.in</strong><span>Profile, work, and links</span><b aria-hidden="true">↗</b></a>
-            <a class="card" href="https://scaling-life.com" target="_blank" rel="noopener noreferrer"><small>WRITING</small><strong>Scaling Life</strong><span>Essays and notes</span><b aria-hidden="true">↗</b></a>
-            <a class="card" href="https://lab.animeshj9.com" target="_blank" rel="noopener noreferrer"><small>PUBLIC LAB</small><strong>Experiments</strong><span>Directory of things built</span><b aria-hidden="true">↗</b></a>
-          </div>
-        </section>
-        <section aria-labelledby="experiments-title">
-          <div class="section-head"><h2 id="experiments-title">Experiments</h2><span>04</span></div>
-          <div class="ledger">
-            <a href="https://footpath-optional.animeshj9.com" target="_blank" rel="noopener noreferrer"><span>004</span><strong>Footpath Optional</strong><em>CITIES</em><b>↗</b></a>
-            <a href="https://galli-club.animeshj9.com" target="_blank" rel="noopener noreferrer"><span>003</span><strong>Galli Club</strong><em>FAMILY</em><b>↗</b></a>
-            <a href="https://feedproof.animeshj9.com" target="_blank" rel="noopener noreferrer"><span>002</span><strong>FeedProof</strong><em>COMMERCE</em><b>↗</b></a>
-            <a href="https://long-arc.animeshj9.com" target="_blank" rel="noopener noreferrer"><span>001</span><strong>Long Arc</strong><em>DECISIONS</em><b>↗</b></a>
-          </div>
-        </section>
-        <section class="bottom" aria-labelledby="infra-title">
-          <div><div class="section-head"><h2 id="infra-title">Infrastructure</h2><span>01</span></div><a class="api" href="https://api.animeshj9.com" target="_blank" rel="noopener noreferrer"><i aria-hidden="true"></i><span><strong>api.animeshj9.com</strong><small>Shared backend · operational</small></span><b>↗</b></a></div>
-          <div><div class="section-head"><h2>Metrics</h2><span>SOON</span></div><div class="metrics"><span>Traffic</span><span>Usage</span><span>Coffee</span><span>Uptime</span><p>Connections coming next.</p></div></div>
-        </section>
-      </main>
-      <footer><span>OWNER VIEW</span><span>HYDERABAD · 2026</span></footer>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Private site operations and source-backed reporting." />
+  <title>Lab / Control Plane</title>
+  <link rel="icon" href="./dashboard-favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./dashboard.css" />
+  <script type="module" src="./dashboard.mjs"></script>
+</head>
+<body>
+  <div class="shell">
+    <header><a class="brand" href="/" aria-label="Control plane home"><span>A/9</span> CONTROL PLANE</a><span class="private"><i></i> OWNER ONLY</span></header>
+    <main>
+      <section class="intro"><div><p class="eyebrow">ANIMESHJ9.COM / OPERATIONS</p><h1>What’s live.<br><em>What’s actually known.</em></h1><p class="lede">One place for the sites, their signals, and the next useful thing.</p></div><div class="refresh-panel"><button id="refresh" type="button">Refresh overview <span aria-hidden="true">↻</span></button><p id="updated">Waiting for the private API</p></div></section>
+      <div id="notice" class="notice" role="status" aria-live="polite">Loading the owner overview…</div>
+      <noscript><p class="notice">JavaScript is needed to load the private overview. The site links below still work.</p></noscript>
+      <section class="metrics" aria-label="At a glance">
+        <article class="metric"><span class="eyebrow">SITE INVENTORY</span><strong id="site-count">—</strong><p>Public sites and experiments</p><span class="pill neutral" id="asset-count">Not checked</span></article>
+        <article class="metric"><span class="eyebrow">VISITS</span><strong id="visits-count">—</strong><p>Reporting not connected</p><span class="pill warning">Unknown, not zero</span></article>
+        <article class="metric"><span class="eyebrow">STRIPE · LAST 30 DAYS</span><strong id="stripe-count">—</strong><p id="stripe-caption">Waiting for existing connection</p><span class="pill neutral" id="stripe-status">Not checked</span></article>
+        <article class="metric"><span class="eyebrow">OVERVIEW API</span><strong class="word" id="api-state">—</strong><p id="api-caption">Checking owner overview</p><a href="https://api.animeshj9.com/health" target="_blank" rel="noopener noreferrer">Check public API health ↗</a></article>
+      </section>
+      <section class="section" aria-labelledby="sites-title"><div class="section-head"><div><p class="eyebrow">THE COLLECTION</p><h2 id="sites-title">Sites & experiments</h2></div><a href="https://lab.animeshj9.com/" target="_blank" rel="noopener noreferrer">Open public lab ↗</a></div><p class="muted">“Asset ready” checks this deployed build. It is not a live uptime or visitor measurement.</p><div id="sites" class="site-list"><a class="site-row fallback" href="https://lab.animeshj9.com/">Open the public experiment directory ↗</a></div></section>
+      <section class="section" aria-labelledby="signals-title"><div class="section-head"><div><p class="eyebrow">EVIDENCE BEFORE NUMBERS</p><h2 id="signals-title">Data connections</h2></div><span class="muted">No demo metrics</span></div><div class="source-grid">
+        <article class="source-card"><div class="source-head"><span class="source-icon">↗</span><h3>Traffic</h3><span class="pill warning">Not connected</span></div><p id="traffic-message">Visit reporting is not connected. Missing data does not mean zero visitors.</p><p class="source-note" id="traffic-collection">Collection delivery and historical totals are unverified.</p><details><summary>Next step</summary><p id="traffic-next">Review collection and hostname coverage in Cloudflare, then authorize an appropriate read-only reporting connection.</p></details></article>
+        <article class="source-card"><div class="source-head"><span class="source-icon">S</span><h3>Stripe</h3><span class="pill neutral" id="stripe-source-status">Not checked</span></div><p id="stripe-message">Only aggregate payment totals are requested from the existing server-side connection.</p><div id="stripe-totals"></div><p class="source-note" id="stripe-scope">No customer details, payment identifiers or credentials are sent to this page.</p><details><summary>Scope & next step</summary><p id="stripe-next">Loading the available reporting scope.</p></details></article>
+        <article class="source-card"><div class="source-head"><span class="source-icon">≋</span><h3>Substack</h3><span class="pill warning">Not connected</span></div><p id="substack-message">Subscriber, email-open and publication revenue data are not connected.</p><details><summary>Next step</summary><p id="substack-next">Connect authorized publication reporting or an owner-provided aggregate export.</p></details></article>
+        <article class="source-card"><div class="source-head"><span class="source-icon">X</span><h3>X</h3><span class="pill warning">Not connected</span></div><p id="x-message">Post impressions and engagement reporting are not connected.</p><details><summary>Next step</summary><p id="x-next">Connect authorized read-only reporting or an aggregate export.</p></details></article>
+      </div></section>
+      <section class="upkeep section" aria-labelledby="upkeep-title"><div><p class="eyebrow">KEEP IT USEFUL</p><h2 id="upkeep-title">Small, regular upkeep.</h2><p id="upkeep-cadence">Weekly review on Mondays</p><p class="muted">Follow live health, real usage, source freshness, and the ideas worth building next.</p></div><ol id="upkeep-checks"><li>After each release: verify checks and live behavior</li><li>Weekly: source health, broken links and useful improvements</li><li>Monthly: dependencies, exports and experiment review</li></ol></section>
+    </main>
+    <footer><span>PRIVATE OWNER VIEW</span><span>Live responses stay behind the existing owner login</span></footer>
+  </div>
+</body>
 </html>

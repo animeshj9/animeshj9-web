@@ -6,7 +6,8 @@ Source for the experiments intended for **animeshj9.com**. One repository, one f
 
 | Route | Experiment | Status |
 | --- | --- | --- |
-| `/` | Lab catalogue | Footpath Optional featured first |
+| `/` | Lab catalogue | After the Demo featured first |
+| `/after-the-demo/` | Local-first AI value bench | Full-effort timing, quality gates, trial history and export |
 | `/footpath-optional/` | Hyderabad pedestrian evidence map | OSM snapshot, local field notes, archived photo and design diagram; no reviewed field surveys yet |
 | `/galli-club/` | Original Hyderabad story-and-play adventures for ages 3–7 | Playable sample + finished printable edition; sales closed pending playtests |
 | `/feedproof/` | Google Shopping feed preflight: local CSV/TSV checks, repair report and formatting fixes | Earlier experiment; free checker |
@@ -35,12 +36,16 @@ Serve `dist/` with any static HTTP server to use the applications locally. ES mo
 
 Galli Club's public story is `dist/galli-club/adventure.json`; `play.mjs` handles the pure story/keepsake logic and `app.mjs` handles the parent interface. The authored full pack and PDF live in `products/galli-club/`, outside public assets. Rebuild printables with `python scripts/build-galli-pdfs.py` (ReportLab, Pillow, pypdf and DejaVu fonts); the live site needs no Python.
 
-## Subdomain migration (prepared)
+## Owner dashboard and operations
+
+The root domain is an owner-only control plane with authenticated runtime reporting. Public lab routes cannot serve dashboard assets; Pages packaging also excludes them. See [current deployment, source definitions, privacy boundaries and upkeep](docs/UPKEEP.md). Traffic, Substack and X reporting remain explicitly unconnected; no missing count is represented as zero.
+
+## Subdomain migration (historical setup)
 
 [Owner-only dashboard and public subdomains: setup and cutover](docs/SUBDOMAINS.md). This is a separate deployment configuration; existing site names, content and GitHub Pages remain unchanged until cutover.
 
 ## Deployment
 
-GitHub Actions tests main/PR changes and packages only public assets into `_site/`. Successful main builds deploy through **GitHub Pages** after Pages is enabled in repository settings. Squarespace keeps domain registration and DNS. No Cloudflare credentials are used. [Manual launch checklist](docs/LAUNCH.md).
+Cloudflare **Workers Builds** is GitHub-connected and deploys the host-routed production Worker separately from GitHub Actions. Actions tests main/PR changes, validates the Worker bundle with a dry run, and publishes the public `_site/` artifact to GitHub Pages. Verify both systems for the exact release commit. [Operations and current release checklist](docs/UPKEEP.md). The [older launch checklist](docs/LAUNCH.md) is retained as historical context.
 
 Public assets live in `dist/`; documentation and tests stay outside it. The previous hosting manifest is retained for continuity but is not used by this GitHub Actions workflow. The old Wrangler configuration is retained but unused. No private feeds, customer data, API keys or credentials belong in this repository.

@@ -5,6 +5,8 @@ const output=join(root,'_site');
 rmSync(output,{recursive:true,force:true});
 mkdirSync(output,{recursive:true});
 cpSync(join(root,'dist'),output,{recursive:true});
+// Owner dashboard must never be packaged into a publicly served Pages artifact.
+rmSync(join(output,'dashboard'),{recursive:true,force:true});
 // Pages ignores _headers. Preserve browser-enforceable policies in HTML.
 // HTTP-only controls cannot be reproduced with meta tags (see LAUNCH.md).
 const headers=readFileSync(join(root,'dist/_headers'),'utf8');
