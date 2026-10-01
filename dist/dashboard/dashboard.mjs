@@ -15,7 +15,7 @@ function render(data) {
   const list = $('sites'); list.replaceChildren();
   for (const site of data.sites) {
     const row = document.createElement('a'); row.className = 'site-row'; row.href = site.url; row.target = '_blank'; row.rel = 'noopener noreferrer';
-    const name = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = site.name; const kind = document.createElement('small'); kind.textContent = `${site.kind} ↗`; name.append(strong, kind);
+    const name = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = site.name; const kind = document.createElement('small'); kind.textContent = `${site.kind} →`; name.append(strong, kind);
     const description = document.createElement('span'); description.className = 'site-description'; description.textContent = site.description;
     const status = document.createElement('span'); status.className = `pill ${site.state === 'asset_ready' ? 'good' : site.state === 'external' ? 'neutral' : 'warning'}`; status.textContent = ({ asset_ready: 'Asset ready', external: 'External site', asset_missing: 'Asset missing', asset_unavailable: 'Check unavailable' })[site.state] || 'Unknown';
     const visits = document.createElement('span'); visits.className = 'site-visits'; const value = document.createElement('b'); value.textContent = '—'; visits.append(value, 'Visits unknown'); row.append(name, description, status, visits); list.append(row);
@@ -37,7 +37,7 @@ function render(data) {
     }
   } else { text('stripe-count', '—'); text('stripe-caption', 'Payment totals unavailable'); }
   text('upkeep-cadence', data.upkeep.cadence); const checks = $('upkeep-checks'); checks.replaceChildren(); for (const item of data.upkeep.checks) { const li = document.createElement('li'); li.textContent = item; checks.append(li); }
-  text('updated', `Checked ${new Date(data.generatedAt).toLocaleString()}`);
+  text('updated', `Checked ${new Date(data.generatedAt).toLocaleString(undefined, { timeZoneName: 'short' })}`);
   text('notice', 'Owner overview loaded. Missing reporting stays unknown; asset readiness is not uptime.'); $('notice').classList.remove('error');
 }
 let loading = false;

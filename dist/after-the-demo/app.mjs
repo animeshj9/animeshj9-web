@@ -97,7 +97,7 @@ function render() {
   const hourly = preview ? sampleHourlyValue : state.hourlyValue;
   const summary = summarize(trials, hourly);
   $('sample-toggle').setAttribute('aria-pressed', String(preview));
-  $('sample-toggle').textContent = preview ? 'Back to my results →' : 'Explore a synthetic example ↗';
+  $('sample-toggle').textContent = preview ? 'Back to my results →' : 'Explore a synthetic example →';
   $('sample-banner').hidden = !preview;
   $('saved-value').replaceChildren(node('span', '', summary.count ? signedMinutes(summary.saved) : '—'));
   if (summary.count) $('saved-value').append(node('span', 'unit', 'min'));
