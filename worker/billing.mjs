@@ -20,7 +20,9 @@ function unavailable(kind, error) {
 async function stripeGet(path, params, context) {
   const query = new URLSearchParams(params);
   let response;
-  try { response = await context.fetchImpl(`https://api.stripe.com/v1/${path}${query.toString() ? `?${query}` : ''}`, { method: 'GET', headers: { Authorization: `Bearer ${context.key}` }, signal: context.signal }); }
+  // workerd fetch rejects unrelated receivers; never invoke it as context.fetchImpl().
+  const fetchImpl = context.fetchImpl;
+  try { response = await fetchImpl(`https://api.stripe.com/v1/${path}${query.toString() ? `?${query}` : ''}`, { method: 'GET', headers: { Authorization: `Bearer ${context.key}` }, signal: context.signal }); }
   catch (error) { throw new BillingReadError(error?.name === 'AbortError' ? 'timeout' : 'network_unavailable'); }
   if (!response.ok) throw new BillingReadError(`provider_http_${response.status}`);
   try { return await response.json(); } catch { throw new BillingReadError('unreadable_json'); }

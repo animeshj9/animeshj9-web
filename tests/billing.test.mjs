@@ -128,3 +128,10 @@ test('safe diagnostics distinguish HTTP access failure from malformed data witho
   assert.equal(result.account.reason, 'provider_http_403'); assert.equal(result.subscriptions.activeReason, 'provider_http_403'); assert.equal(result.subscriptions.trialingReason, 'provider_http_403'); assert.equal(result.payouts.reason, 'provider_http_403'); assert.doesNotMatch(JSON.stringify(result), /private provider error|secret|fixture-key/);
   const malformed = await readStripeBilling({ STRIPE_SECRET_KEY: 'fixture-key' }, { now, fetchImpl: async () => json({ bad: 'private' }) }); assert.equal(malformed.account.reason, 'unsupported_response'); assert.equal(malformed.payouts.reason, 'unsupported_response');
 });
+
+
+test('injected fetch is called without an unrelated receiver, matching workerd semantics', async () => {
+  const normal = fixtureFetch(); let calls = 0;
+  const receiverSensitiveFetch = async function(url, options) { assert.equal(this, undefined, 'workerd fetch requires a global or detached receiver'); calls++; return normal(url, options); };
+  const result = await readStripeBilling({ STRIPE_SECRET_KEY: 'fixture-key' }, { now, fetchImpl: receiverSensitiveFetch }); assert.equal(calls, 4); assert.equal(result.account.status, 'connected'); assert.equal(result.subscriptions.activeCount, 1); assert.equal(result.payouts.count, 1);
+});
