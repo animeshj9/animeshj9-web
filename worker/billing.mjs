@@ -11,14 +11,19 @@ export function observedMode(values) {
   return modes.has('mixed') || modes.size > 1 ? 'mixed' : [...modes][0] || 'unverified';
 }
 function objectMode(rows) { return observedMode(rows.map(row => row.livemode ? 'live' : 'test')); }
-function unavailable(kind) {
-  return { status: 'unavailable', mode: 'unverified', message: `${kind} could not be read with the existing connection. No scope or credential was changed.` };
+class BillingReadError extends Error { constructor(reason) { super('Billing read unavailable'); this.reason = reason; } }
+function failureReason(error) { return error instanceof BillingReadError ? error.reason : 'unsupported_response'; }
+function unavailable(kind, error) {
+  const reason = failureReason(error);
+  return { status: 'unavailable', mode: 'unverified', reason, message: `${kind} could not be read with the existing connection (${reason.replaceAll('_', ' ')}). No scope or credential was changed.` };
 }
 async function stripeGet(path, params, context) {
   const query = new URLSearchParams(params);
-  const response = await context.fetchImpl(`https://api.stripe.com/v1/${path}${query.size ? `?${query}` : ''}`, { method: 'GET', headers: { Authorization: `Bearer ${context.key}` }, signal: context.signal });
-  if (!response.ok) throw Error('Stripe read unavailable');
-  return response.json();
+  let response;
+  try { response = await context.fetchImpl(`https://api.stripe.com/v1/${path}${query.toString() ? `?${query}` : ''}`, { method: 'GET', headers: { Authorization: `Bearer ${context.key}` }, signal: context.signal }); }
+  catch (error) { throw new BillingReadError(error?.name === 'AbortError' ? 'timeout' : 'network_unavailable'); }
+  if (!response.ok) throw new BillingReadError(`provider_http_${response.status}`);
+  try { return await response.json(); } catch { throw new BillingReadError('unreadable_json'); }
 }
 async function stripeList(path, params, context, validate) {
   const rows = []; const seen = new Set(); let cursor; let more = false;
@@ -86,19 +91,20 @@ export async function readStripeBilling(env, { fetchImpl = fetch, now = Date.now
   try {
     const accountPromise = (async () => {
       try { const data = await stripeGet('account', {}, context); if (data.object !== 'account' || !/^acct_[A-Za-z0-9]+$/.test(data.id || '')) throw Error('Invalid account'); return { status: 'connected', accountId: data.id, message: 'Identity returned by the runtime connection. Only the account ID is displayed.' }; }
-      catch { return { ...unavailable('Runtime account identity'), accountId: null }; }
+      catch (error) { return { ...unavailable('Runtime account identity', error), accountId: null }; }
     })();
-    const activePromise = stripeList('subscriptions', { status: 'active' }, context, row => { if (row.object !== 'subscription' || row.status !== 'active') throw Error('Invalid subscription status'); }).then(result => result.mode === 'mixed' ? { mode: 'mixed' } : ({ ...result, ...summarizeSubscriptions(result.rows) })).catch(() => null);
-    const trialPromise = stripeList('subscriptions', { status: 'trialing' }, context, row => { if (row.object !== 'subscription' || row.status !== 'trialing') throw Error('Invalid trial status'); }).catch(() => null);
+    const activePromise = stripeList('subscriptions', { status: 'active' }, context, row => { if (row.object !== 'subscription' || row.status !== 'active') throw Error('Invalid subscription status'); }).then(result => result.mode === 'mixed' ? { mode: 'mixed' } : ({ ...result, ...summarizeSubscriptions(result.rows) })).catch(error => ({ error: failureReason(error) }));
+    const trialPromise = stripeList('subscriptions', { status: 'trialing' }, context, row => { if (row.object !== 'subscription' || row.status !== 'trialing') throw Error('Invalid trial status'); }).catch(error => ({ error: failureReason(error) }));
     const payoutPromise = (async () => {
       try {
         // Filter by arrival_date only: payouts created before this window must remain eligible.
         const result = await stripeList('payouts', { status: 'paid', 'arrival_date[gte]': String(from), 'arrival_date[lte]': String(to) }, context, row => { if (row.object !== 'payout' || row.status !== 'paid' || !Number.isInteger(row.arrival_date) || row.arrival_date < from || row.arrival_date > to) throw Error('Invalid payout window'); });
         if (result.mode === 'mixed') return { ...unavailable('Payout mode verification'), ...window, mode: 'mixed', count: null, totals: null, complete: false };
         return { status: result.complete ? 'connected' : 'partial', ...window, mode: result.mode, count: result.rows.length, complete: result.complete, totals: summarizePayouts(result.rows), message: 'Stripe marked paid; bank receipt not verified.', scope: 'Payouts with expected arrival dates in the last 30 days. Separate from charge creation and subscription billing. Includes signed payout/reversal amounts; no bank details are displayed.' };
-      } catch { return { ...unavailable('Payout reporting'), ...window, count: null, totals: null, complete: false }; }
+      } catch (error) { return { ...unavailable('Payout reporting', error), ...window, count: null, totals: null, complete: false }; }
     })();
-    const [account, active, trialing, payouts] = await Promise.all([accountPromise, activePromise, trialPromise, payoutPromise]);
+    const [account, activeResult, trialingResult, payouts] = await Promise.all([accountPromise, activePromise, trialPromise, payoutPromise]);
+    const active = activeResult.error ? null : activeResult; const trialing = trialingResult.error ? null : trialingResult;
     if (observedMode([active?.mode, trialing?.mode, payouts.mode]) === 'mixed') return withholdConflictingBilling({ account, payouts: { ...payouts, ...window }, subscriptions: {}, checkedAt: new Date(now).toISOString() });
     const subscriptions = {
       status: !active && !trialing ? 'unavailable' : !active || !trialing || !active.complete || !trialing.complete || !active.listPriceComplete ? 'partial' : 'connected',
@@ -108,7 +114,8 @@ export async function readStripeBilling(env, { fetchImpl = fetch, now = Date.now
       unsupportedItems: active?.unsupportedItems ?? null, currencyMismatchItems: active?.currencyMismatchItems ?? null, incompleteItemLists: active?.incompleteItemLists ?? null,
       pausedCollectionCount: active?.pausedCollectionCount ?? null, scheduledCancellationCount: active?.scheduledCancellationCount ?? null,
       mode: observedMode([active?.mode, trialing?.mode]),
-      message: 'Current Stripe subscriptions. Active and trialing counts are separate; neither is a total audience count.',
+      activeReason: activeResult.error || null, trialingReason: trialingResult.error || null,
+      message: !active || !trialing ? [activeResult.error ? `Active reporting unavailable (${activeResult.error.replaceAll('_', ' ')}).` : 'Active reporting available.', trialingResult.error ? `Trialing reporting unavailable (${trialingResult.error.replaceAll('_', ' ')}).` : 'Trialing reporting available.', 'No scope or credential was changed.'].join(' ') : 'Current Stripe subscriptions. Active and trialing counts are separate; neither is a total audience count.',
       scope: 'Fixed licensed list-price subtotal × quantity, grouped by currency and billing interval. Catalog amounts without invoice-level adjustments for discounts, taxes, credits or fees; tax-inclusive prices remain inclusive; not cash collected, MRR or a revenue forecast. Metered, tiered, transformed, paused-collection or incomplete items are flagged rather than estimated. Subscriptions scheduled to cancel remain active until Stripe changes their status.',
     };
     return { account, subscriptions, payouts, mode: observedMode([subscriptions.mode, payouts.mode]), checkedAt: new Date(now).toISOString() };

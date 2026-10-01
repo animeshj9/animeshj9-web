@@ -121,3 +121,10 @@ test('integrated charge/billing mode conflicts withhold both types of financial 
   const normal = fixtureFetch(); const fetchImpl = (url, options) => new URL(url).pathname === '/v1/charges' ? json(list([{ id: 'ch_test', created: now / 1000, paid: true, captured: true, status: 'succeeded', livemode: false, currency: 'usd', amount_captured: 500, amount_refunded: 0 }])) : normal(url, options);
   const result = await readOverview({ STRIPE_SECRET_KEY: 'fixture-key', ASSETS: { fetch: async () => new Response() } }, { now, fetchImpl }); assert.equal(result.sources.stripe.connectionMode, 'mixed'); assert.equal(result.sources.stripe.totals, null); assert.equal(result.sources.stripe.billing.subscriptions.activeCount, null); assert.equal(result.sources.stripe.billing.payouts.totals, null);
 });
+
+
+test('safe diagnostics distinguish HTTP access failure from malformed data without raw provider text', async () => {
+  const result = await readStripeBilling({ STRIPE_SECRET_KEY: 'fixture-key' }, { now, fetchImpl: async () => new Response('private provider error secret', { status: 403 }) });
+  assert.equal(result.account.reason, 'provider_http_403'); assert.equal(result.subscriptions.activeReason, 'provider_http_403'); assert.equal(result.subscriptions.trialingReason, 'provider_http_403'); assert.equal(result.payouts.reason, 'provider_http_403'); assert.doesNotMatch(JSON.stringify(result), /private provider error|secret|fixture-key/);
+  const malformed = await readStripeBilling({ STRIPE_SECRET_KEY: 'fixture-key' }, { now, fetchImpl: async () => json({ bad: 'private' }) }); assert.equal(malformed.account.reason, 'unsupported_response'); assert.equal(malformed.payouts.reason, 'unsupported_response');
+});
