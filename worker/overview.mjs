@@ -4,6 +4,7 @@ export const inventory = [
   { id: 'profile', name: 'Personal site', url: 'https://animeshja.in/', kind: 'Identity', description: 'Profile, work and coffee support' },
   { id: 'writing', name: 'Scaling Life', url: 'https://scaling-life.com/', kind: 'Writing', description: 'Essays and notes' },
   { id: 'lab', name: 'Lab', url: 'https://lab.animeshj9.com/', kind: 'Directory', asset: '/index.html', description: 'The public experiment collection' },
+  { id: 'beat', name: 'Beat', url: 'https://beat.animeshj9.com/', kind: 'Neighbourhoods', description: 'Sample alpha with fictional neighbourhood reports; not live reporting' },
   { id: 'after-the-demo', name: 'After the Demo', url: 'https://lab.animeshj9.com/after-the-demo/', kind: 'AI outcomes', asset: '/after-the-demo/index.html', description: 'Measure whether AI actually saved work' },
   { id: 'footpath-optional', name: 'Footpath Optional', url: 'https://footpath-optional.animeshj9.com/', kind: 'Cities', asset: '/footpath-optional/index.html', description: 'Pedestrian evidence and field notes' },
   { id: 'galli-club', name: 'Galli Club', url: 'https://galli-club.animeshj9.com/', kind: 'Stories', asset: '/galli-club/index.html', description: 'Hyderabad story-and-play adventures' },

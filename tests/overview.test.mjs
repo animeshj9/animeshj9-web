@@ -82,3 +82,16 @@ test('After the Demo has a canonical slash route and no outgoing connection poli
   const response = await handle(request('lab.animeshj9.com', '/after-the-demo/'), assets);
   assert.match(response.headers.get('content-security-policy'), /connect-src 'none'/);
 });
+
+
+test('Beat is an external sample alpha and is never probed as a local asset', async () => {
+  const paths = [];
+  const env = { ASSETS: { fetch: async req => { paths.push(new URL(req.url).pathname); return new Response(null); } } };
+  const data = await readOverview(env, { now });
+  const beat = data.sites.find(site => site.id === 'beat');
+  assert.equal(beat.url, 'https://beat.animeshj9.com/');
+  assert.equal(beat.state, 'external');
+  assert.equal(beat.visits, null);
+  assert.match(beat.description, /Sample alpha.*fictional.*not live reporting/);
+  assert.ok(paths.every(path => !path.includes('beat')), 'Beat belongs to a separate Worker');
+});

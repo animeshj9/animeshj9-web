@@ -13,6 +13,14 @@ const js = readFileSync(resolve(root, 'dist/long-arc/app.js'), 'utf8');
 
 assert.match(html, /<html lang="en">/);
 assert.match(html, /<meta\s+name="description"/);
+const cards = [...html.matchAll(/<a class="experiment-card"[^>]*>[\s\S]*?<\/a>/g)].map(match => match[0]);
+assert.equal(cards.length, 6);
+assert.match(html, /06 EXPERIMENTS/);
+const beatCard = cards.find(card => card.includes('https://beat.animeshj9.com/'));
+assert.ok(beatCard, 'Beat links to its independent absolute URL');
+assert.match(beatCard, /Sample alpha/);
+assert.match(beatCard, /fictional sample reports/);
+assert.match(beatCard, /not live reporting/);
 assert.match(html, /ANIMESH \/ LAB/);
 assert.match(html, /href="\.\/long-arc\/"/);
 assert.match(experimentHtml, /<main class="workspace" id="workspace"/);
