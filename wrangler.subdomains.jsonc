@@ -1,5 +1,7 @@
 {
   "name": "animeshj9-lab-subdomains",
+  "vars": { "OPS_PUBLIC_GITHUB": "enabled" },
+  "version_metadata": { "binding": "OPS_VERSION" },
   "main": "worker/index.mjs",
   "compatibility_date": "2026-09-21",
   "workers_dev": false,

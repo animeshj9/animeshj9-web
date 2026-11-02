@@ -74,3 +74,16 @@ A weekly read-only review is scheduled for Mondays. Review live routes, source f
 ## After the Demo
 
 Local-first AI outcome measurement. Count baseline effort and all assisted effort, including review/rework; record quality gates and costs. The sample is synthetic and separate from real trials. Data stays in the browser, with export and clear controls. It makes no model calls and requests no account access. Never infer evidence of general AI productivity from a small or selectively chosen trial set.
+
+
+## Private release alignment
+
+The owner overview compares `main` and the latest push/manual GitHub Actions runs for the exact commit across `animeshj9-web`, `beat`, `animeshja.in` and `scaling-life`. PR runs are excluded. Public REST reads require no credential and are enabled by the nonsecret `OPS_PUBLIC_GITHUB` setting. Reporting is best-effort: rate limits, missing workflows, timeouts and incomplete history stay explicit. At most 30 workflow runs are read per repository; older runs are not inferred. There is no background API polling or persisted status snapshot. Opening or refreshing the overview uses up to eight public GitHub requests; the shared unauthenticated quota can be exhausted by frequent refreshes.
+
+The `OPS_VERSION` metadata binding identifies the lab Worker serving the response. Worker packaging writes the checkout commit and clean-worktree marker to an internal dashboard asset. Only clean builds support the serving-commit comparison. This is not a hardcoded health snapshot: it identifies deployed code, and is compared with a freshly requested main commit. It does not prove all rollout allocations or app health. Public routes and Pages packaging exclude this internal metadata.
+
+Cloudflare build history, trigger filters and full traffic allocation are independently read only if an approved runtime `OPS_CLOUDFLARE_TOKEN` and `OPS_CLOUDFLARE_ACCOUNT_ID` already exist. Neither was provisioned for this change. The deployment has only authentication/Stripe secrets; those credentials are never reused. The integration gap is account-scoped Workers CI Read (builds/triggers/version-to-build mapping) and Workers Scripts Read (active deployments) for the two mapped Workers. Any future credential setup needs separate authorization. Connector access in ChatGPT does not grant the deployed Worker access.
+
+The adapter reads the newest 20 builds and joins active version IDs with build records, checking repository, owner and branch before attributing commits. Missing history is bounded evidence, never proof that a build never ran. A successful build alone cannot mark production current. Mixed, mismatched or unmapped active versions stay distinct. Trigger filters do not establish installation permissions or webhook delivery. GitHub-hosted sites have no Cloudflare Worker mapping and their active hosting revision remains unverified.
+
+Each check is timestamped. The browser marks data stale after five minutes or a refresh failure; its timer does not fetch APIs. All source reads are GET-only, bounded by a shared seven-second deadline and a 2 MiB response cap, and errors never return raw provider bodies or credentials. Operational reads only occur after the existing owner authorization. HEAD and public requests do not fetch sources.

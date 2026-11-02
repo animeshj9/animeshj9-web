@@ -1,3 +1,4 @@
+import { readDeployments } from './deployments.mjs';
 import { readStripeBilling, observedMode, withholdConflictingBilling } from './billing.mjs';
 // Owner-only response data. Never import this module into public browser code.
 export const inventory = [
@@ -67,6 +68,7 @@ export async function readStripeSummary(env, { fetchImpl = fetch, now = Date.now
 
 export async function readOverview(env, options = {}) {
   const now = options.now ?? Date.now();
+  const deploymentsPromise = readDeployments(env, { now, fetchImpl: options.deploymentFetchImpl });
   const billingPromise = readStripeBilling(env, { ...options, now });
   const chargesPromise = readStripeSummary(env, { ...options, now });
   const sites = await Promise.all(inventory.map(async ({ asset, ...site }) => {
@@ -81,6 +83,7 @@ export async function readOverview(env, options = {}) {
   if (connectionMode === 'mixed') { billing = withholdConflictingBilling(billing); charges = { ...charges, status: 'unavailable', totals: null, message: 'Live/test mode evidence conflicts. Financial counts and amounts are withheld.' }; }
   return {
     generatedAt: new Date(now).toISOString(),
+    deployments: await deploymentsPromise,
     sites,
     api: { ownerOverview: 'responding', publicHealth: 'not_checked', healthPath: 'https://api.animeshj9.com/health', checkout: env.STRIPE_SECRET_KEY ? 'configured' : 'not_configured' },
     sources: {

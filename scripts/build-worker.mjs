@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { cpSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { sites } from '../worker/sites.mjs';
@@ -19,3 +20,7 @@ for (const [host, folder] of Object.entries(sites)) dashboard = dashboard.replac
 writeFileSync(join(output, 'index.html'), dashboard);
 rmSync(join(output, '_headers'));
 console.log('Built host-routed assets; names and content preserved.');
+
+const releaseCommit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
+if (!/^[a-f0-9]{40}$/.test(releaseCommit)) throw Error('Cannot identify release commit');
+writeFileSync(join(output, 'dashboard/release.json'), JSON.stringify({ commit: releaseCommit, clean: !execFileSync('git', ['status', '--porcelain', '--untracked-files=normal'], { cwd: root, encoding: 'utf8' }).trim() }));
